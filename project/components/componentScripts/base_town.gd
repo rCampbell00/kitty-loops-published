@@ -200,11 +200,11 @@ func reset_town_view() -> void:
 	self.update_all_visibility()
 
 func _update_looting(lootable_id: String, state: bool) -> void:
-	#MainPlayer.add_skill("pyromancy", 100)
-	#MainPlayer.add_soul_stone("base", 1)
-	#MainPlayer.add_town_progress("wander", 100)
-	#MainPlayer.check_town_lootable("smash_pots")
-	#EventBus.save()
+	MainPlayer.add_skill("pyromancy", 100)
+	MainPlayer.add_soul_stone("base", 1)
+	MainPlayer.add_town_progress("wander", 100)
+	MainPlayer.check_town_lootable("smash_pots")
+	EventBus.save()
 	print(MainPlayer.get_skill_level("pyromancy"))
 	print(MainPlayer.soul_stones)
 	self.town_data.change_check_new(lootable_id, state)
