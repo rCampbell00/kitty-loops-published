@@ -55,7 +55,7 @@ func create_tool_tip() -> void:
 	if has_node("ToolTip"):
 		return
 	var tool_tip_instance = tool_tip.instantiate()
-	var tool_tip_text := ("%s ⇐ %s ⇐ %s\n"+Utility.bb_bold(LanguageValues.lootable_tooltip_text[0])
+	var tool_tip_text := ("%s ← %s ⇽ %s ⇦ ↤ ⇐ ⇦\n"+Utility.bb_bold(LanguageValues.lootable_tooltip_text[0])
 						+" %d\n"+Utility.bb_bold(LanguageValues.lootable_tooltip_text[1])+" %d")
 	tool_tip_text = tool_tip_text % [self.desc.lootable_finding_text[0],self.desc.lootable_finding_text[1],self.desc.lootable_finding_text[2], self.total, self.explored]
 	tool_tip_instance.update_text(tool_tip_text)
