@@ -1,0 +1,134 @@
+[gd_scene load_steps=2 format=3 uid="uid://dh44s0cldd6or"]
+
+[ext_resource type="PackedScene" uid="uid://bowfkgilnb1j1" path="res://components/skillBar.tscn" id="1_bfhnm"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1520.0
+offset_bottom = -840.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkillTitlePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 40.0
+theme_type_variation = &"ComponentPanel"
+
+[node name="SkillTitle" type="Label" parent="SkillTitlePanel"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 40.0
+theme_type_variation = &"LabelTitle"
+text = "Skills"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillsContainer" type="Panel" parent="."]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 400.0
+offset_bottom = 240.0
+theme_type_variation = &"ComponentPanelBottom"
+
+[node name="MarginContainer" type="MarginContainer" parent="SkillsContainer"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 200.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SkillsContainer/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VFlowContainer" type="HFlowContainer" parent="SkillsContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/h_separation = 10
+
+[node name="SelfCombatStat" type="Control" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+
+[node name="SelfCombatLabel" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/SelfCombatStat"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 180.0
+offset_bottom = 24.0
+text = "Self Combat"
+
+[node name="SelfCombatValue" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/SelfCombatStat"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 108.0
+offset_bottom = 14.0
+text = "100k"
+horizontal_alignment = 2
+
+[node name="TeamCombatStat" type="Control" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+
+[node name="TeamCombatLabel" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/TeamCombatStat"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 108.0
+offset_bottom = 14.0
+text = "Team Combat"
+
+[node name="TeamCombatValue" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/TeamCombatStat"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 108.0
+offset_bottom = 14.0
+text = "100k"
+horizontal_alignment = 2
+
+[node name="SkillBar" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar2" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar3" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar4" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar5" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar6" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar7" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar8" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar9" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar10" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar11" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar12" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar13" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2
+
+[node name="SkillBar14" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
+layout_mode = 2

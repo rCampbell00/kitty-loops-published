@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwdes7fr0mvq"]
+
+[ext_resource type="Script" path="res://components/componentScripts/action_popup.gd" id="1_o4xly"]
+
+[node name="ActionToolTip" type="PanelContainer"]
+visible = false
+top_level = true
+offset_right = 142.0
+offset_bottom = 78.0
+size_flags_horizontal = 2
+script = ExtResource("1_o4xly")
+
+[node name="M" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="V" type="VBoxContainer" parent="M"]
+layout_mode = 2
+
+[node name="ActionFlavour" type="RichTextLabel" parent="M/V"]
+layout_mode = 2
+bbcode_enabled = true
+text = "<flavour>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="H" type="HSeparator" parent="M/V"]
+layout_mode = 2
+
+[node name="ActionEffects" type="RichTextLabel" parent="M/V"]
+layout_mode = 2
+bbcode_enabled = true
+text = "<effect>"
+fit_content = true
+autowrap_mode = 0
+
+[node name="H2" type="HSeparator" parent="M/V"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="ActionStats" type="RichTextLabel" parent="M/V"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+bbcode_enabled = true
+text = "<Stats>"
+fit_content = true
+autowrap_mode = 0

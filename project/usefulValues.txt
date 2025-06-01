@@ -1,0 +1,32 @@
+Component Colours:
+	Main Background: E4ECE5
+	Secondary Background: C0E4C7
+	ActionList Background: CDDED2
+	ActionComplete Background: 96A89B
+	Button Colour: 4CAF50
+	Button Pressed Coulour: 3E8E41
+	SkillBar: 9D67CD
+	TalentBar: FFB45B
+	ExploreSub: 95AFFF
+	ActionHover: BEF8FF
+	ScrollBar: 99C193
+
+Mana Colour: 8293FF
+
+Skill Colours:
+	Dex: 92AF29
+	Str: D70037
+	Con: B06F37
+	Spd: CFB905
+	Per: 4EC3C8
+	Cha: D77093
+	Int: 2640B2
+	Luck: 25b536
+	Soul: 663399
+
+Zone Colours:
+	Zone 1:
+		Main: D7CFA7 #E1C27E
+		Secondary: E3E2CB
+		Disabled: D2D6BC
+		

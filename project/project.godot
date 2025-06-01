@@ -1,0 +1,50 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Kitty Loops"
+run/main_scene="res://GUI.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/bg_color=Color(0.239686, 0.309012, 0.1397, 1)
+boot_splash/image="res://images/actionIcons/wander.png"
+config/icon="res://icon.svg"
+
+[autoload]
+
+LanguageValues="*res://language_values.gd"
+CustomActionInterpreter="*res://custom_action_interpreter.gd"
+Utility="*res://utility.gd"
+Actions="*res://actions.gd"
+MainPlayer="*res://data/playerData.gd"
+EventBus="*res://event_bus.gd"
+ViewHandler="*res://view_handler.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+
+[global_group]
+
+actions="All actions"
+
+[gui]
+
+theme/custom="res://themes/BaseTheme.tres"
+theme/custom_font="res://themes/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

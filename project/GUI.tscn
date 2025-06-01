@@ -1,0 +1,403 @@
+[gd_scene load_steps=7 format=3 uid="uid://dmmlm6uj54h8i"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_5grw4"]
+[ext_resource type="PackedScene" uid="uid://dh44s0cldd6or" path="res://components/skillsContainer.tscn" id="1_yh6w0"]
+[ext_resource type="PackedScene" uid="uid://7qxq1t0uyju0" path="res://components/world_controller.tscn" id="3_fks6h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l6u2x"]
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_taiqg"]
+font_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_v4md7"]
+font_size = 10
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5grw4")
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.894118, 0.92549, 0.898039, 1)
+metadata/_edit_lock_ = true
+
+[node name="TempMana" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 26.0
+
+[node name="Label" type="Label" parent="TempMana"]
+layout_mode = 2
+text = "Mana"
+label_settings = SubResource("LabelSettings_l6u2x")
+horizontal_alignment = 1
+
+[node name="TempHoly" type="PanelContainer" parent="."]
+layout_mode = 2
+offset_left = 960.0
+offset_right = 1920.0
+offset_bottom = 26.0
+
+[node name="Label" type="Label" parent="TempHoly"]
+layout_mode = 2
+text = "Holy Power"
+label_settings = SubResource("LabelSettings_l6u2x")
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 30.0
+offset_right = 1225.0
+offset_bottom = 50.0
+theme_type_variation = &"LabelItems"
+text = "Mana: 0 | Holy Power: 0 | Gold: 0"
+
+[node name="ChangelogButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 30.0
+offset_right = 136.0
+offset_bottom = 63.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="ChangelogButton"]
+layout_mode = 2
+text = "Changelog"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OptionsButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 146.0
+offset_top = 30.0
+offset_right = 256.0
+offset_bottom = 63.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="OptionsButton"]
+layout_mode = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Guide Button" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 266.0
+offset_top = 30.0
+offset_right = 376.0
+offset_bottom = 63.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="Guide Button"]
+layout_mode = 2
+text = "Guide
+"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stats Button" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 30.0
+offset_right = 496.0
+offset_bottom = 63.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="Stats Button"]
+layout_mode = 2
+text = "Stats"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stats" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 120.0
+offset_right = 426.0
+offset_bottom = 320.0
+columns = 3
+
+[node name="Stat" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat2" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat2"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat3" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat3"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat4" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat4"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat5" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat5"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat6" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat6"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat7" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat7"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat8" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat8"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="Stat9" type="PanelContainer" parent="Stats"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Stats/Stat9"]
+layout_mode = 2
+text = "Dex"
+label_settings = SubResource("LabelSettings_v4md7")
+
+[node name="PanelContainer3" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 603.0
+offset_right = 426.0
+offset_bottom = 803.0
+
+[node name="PanelContainer4" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 845.0
+offset_right = 426.0
+offset_bottom = 1045.0
+
+[node name="StatsLabel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 78.0
+offset_right = 426.0
+offset_bottom = 118.0
+
+[node name="Label" type="Label" parent="StatsLabel"]
+layout_mode = 2
+text = "Stats"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Buffs" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 562.0
+offset_right = 426.0
+offset_bottom = 602.0
+
+[node name="Label" type="Label" parent="Buffs"]
+layout_mode = 2
+text = "Buffs
+"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Boons" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 804.0
+offset_right = 426.0
+offset_bottom = 844.0
+
+[node name="Label" type="Label" parent="Boons"]
+layout_mode = 2
+text = "Boons
+"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="ActionList" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 120.0
+offset_right = 1160.0
+offset_bottom = 1045.0
+
+[node name="PlayButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 466.0
+offset_top = 80.0
+offset_right = 576.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="PlayButton"]
+layout_mode = 2
+text = "Play"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 593.0
+offset_top = 80.0
+offset_right = 703.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="RestartButton"]
+layout_mode = 2
+text = "Restart"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bonus Time" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 718.0
+offset_top = 80.0
+offset_right = 928.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="Bonus Time"]
+layout_mode = 2
+text = "Bonus Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PauseOnEnd" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 943.0
+offset_top = 80.0
+offset_right = 1153.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="PauseOnEnd"]
+layout_mode = 2
+text = "Pause on End"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShadowButton" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 1333.0
+offset_top = 80.0
+offset_right = 1483.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="ShadowButton"]
+layout_mode = 2
+text = "Shadow Realm"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TerraRealm" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 1493.0
+offset_top = 80.0
+offset_right = 1643.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="TerraRealm"]
+layout_mode = 2
+text = "Terra Realm"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CelestialRealm" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 1653.0
+offset_top = 80.0
+offset_right = 1803.0
+offset_bottom = 105.0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="CelestialRealm"]
+layout_mode = 2
+text = "Celestial Realm"
+label_settings = SubResource("LabelSettings_taiqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Skills" parent="." instance=ExtResource("1_yh6w0")]
+layout_mode = 1
+offset_left = 26.0
+offset_top = 321.0
+offset_right = -1494.0
+offset_bottom = -519.0
+
+[node name="World_Controller" parent="." instance=ExtResource("3_fks6h")]
+layout_mode = 1
+offset_left = 1174.0
+offset_top = 120.0
+offset_right = -26.0
+offset_bottom = -35.0

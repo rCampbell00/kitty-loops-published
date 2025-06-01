@@ -1,0 +1,134 @@
+[gd_scene load_steps=6 format=3 uid="uid://cp4fc4pxxbvt4"]
+
+[ext_resource type="Script" path="res://components/componentScripts/multipart_town_bar.gd" id="1_v2dmt"]
+[ext_resource type="PackedScene" uid="uid://drugyfeqfmr65" path="res://components/multipart_bar_section.tscn" id="2_rqaim"]
+[ext_resource type="Texture2D" uid="uid://bjs4qq7qryla1" path="res://images/misc/visible-eye.png" id="3_6edld"]
+[ext_resource type="Texture2D" uid="uid://drspla6j1eyc" path="res://images/misc/hidden-eye.png" id="4_adwiw"]
+[ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="5_00ljs"]
+
+[node name="MultipartTownBar" type="Control"]
+custom_minimum_size = Vector2(690, 40)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1230.0
+offset_bottom = -1040.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v2dmt")
+
+[node name="MultipartName" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 690.0
+offset_bottom = 24.0
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "<Name>"
+fit_content = true
+
+[node name="MultipartTotal" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 563.0
+offset_bottom = 24.0
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "[right]<Total>[/right]"
+fit_content = true
+
+[node name="MultipartTotalValue" type="Label" parent="."]
+layout_mode = 0
+offset_right = 652.0
+offset_bottom = 24.0
+theme_type_variation = &"LabelExplore"
+text = "<Stats>"
+horizontal_alignment = 2
+
+[node name="StatSegments" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 24.0
+offset_right = 652.0
+offset_bottom = 36.0
+theme_override_constants/separation = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressDex"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar2" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressCon"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar3" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressDex"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar4" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressCha"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar5" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressDex"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar6" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressStr"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="ProgressBar7" type="ProgressBar" parent="StatSegments"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ProgressLuck"
+value = 100.0
+fill_mode = 1
+show_percentage = false
+
+[node name="MultipartBarSection" parent="StatSegments" instance=ExtResource("2_rqaim")]
+layout_mode = 2
+
+[node name="Eye" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 666.0
+offset_top = 4.0
+offset_right = 692.0
+offset_bottom = 18.0
+toggle_mode = true
+texture_normal = ExtResource("3_6edld")
+texture_pressed = ExtResource("4_adwiw")
+texture_hover = ExtResource("5_00ljs")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="toggled" from="Eye" to="." method="_on_eye_toggled"]

@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://drehps1yk8td3"]
+
+[ext_resource type="Script" path="res://components/componentScripts/lootable.gd" id="1_kp6d7"]
+[ext_resource type="Texture2D" uid="uid://bjs4qq7qryla1" path="res://images/misc/visible-eye.png" id="2_i60w7"]
+[ext_resource type="Texture2D" uid="uid://drspla6j1eyc" path="res://images/misc/hidden-eye.png" id="3_yb00q"]
+[ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="4_gnt7y"]
+
+[node name="Lootable" type="Control"]
+custom_minimum_size = Vector2(690, 26)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1230.0
+offset_bottom = -1054.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kp6d7")
+
+[node name="LootableName" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 267.0
+offset_bottom = 27.0
+mouse_filter = 2
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "<Name>"
+fit_content = true
+
+[node name="LootableCount" type="Label" parent="."]
+layout_mode = 0
+offset_left = 205.0
+offset_top = 1.0
+offset_right = 372.0
+offset_bottom = 27.0
+theme_type_variation = &"LabelExplore"
+text = "<Count>"
+horizontal_alignment = 2
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 429.0
+offset_right = 652.0
+offset_bottom = 26.0
+mouse_filter = 1
+theme_type_variation = &"exploreCheck"
+theme_override_constants/h_separation = 5
+button_pressed = true
+text = "Check New  First"
+
+[node name="Eye" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 666.0
+offset_top = 4.0
+offset_right = 692.0
+offset_bottom = 18.0
+toggle_mode = true
+texture_normal = ExtResource("2_i60w7")
+texture_pressed = ExtResource("3_yb00q")
+texture_hover = ExtResource("4_gnt7y")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="toggled" from="Eye" to="." method="_on_eye_toggled"]

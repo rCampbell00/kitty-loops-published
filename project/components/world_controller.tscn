@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://7qxq1t0uyju0"]
+
+[ext_resource type="PackedScene" uid="uid://d3lhlcpmh60ec" path="res://components/town_controller.tscn" id="1_2eo4p"]
+[ext_resource type="Script" path="res://components/componentScripts/world_controller.gd" id="1_5advx"]
+
+[node name="World_Controller" type="Control"]
+custom_minimum_size = Vector2(720, 925)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1200.0
+offset_bottom = -155.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5advx")
+
+[node name="TerraTowns" parent="." instance=ExtResource("1_2eo4p")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0

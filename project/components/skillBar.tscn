@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bowfkgilnb1j1"]
+
+[node name="SkillBar" type="Control"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1740.0
+offset_bottom = -1056.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkillLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 180.0
+offset_bottom = 19.0
+text = "Pyromancy"
+
+[node name="SkillValue" type="Label" parent="."]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+offset_right = 180.0
+offset_bottom = 19.0
+text = "100k"
+horizontal_alignment = 2
+
+[node name="SkillProgress" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 180.0
+offset_bottom = 24.0
+show_percentage = false

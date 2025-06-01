@@ -1,0 +1,76 @@
+[gd_scene load_steps=5 format=3 uid="uid://b132ohqorrk5d"]
+
+[ext_resource type="Script" path="res://components/componentScripts/explore_bar.gd" id="1_e0ypw"]
+[ext_resource type="Texture2D" uid="uid://bjs4qq7qryla1" path="res://images/misc/visible-eye.png" id="2_xeo38"]
+[ext_resource type="Texture2D" uid="uid://drspla6j1eyc" path="res://images/misc/hidden-eye.png" id="3_tt78g"]
+[ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="4_cpn6c"]
+
+[node name="ExploreBar" type="Control"]
+custom_minimum_size = Vector2(690, 24)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1230.0
+offset_bottom = -1056.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e0ypw")
+
+[node name="ExploreName" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 333.0
+offset_bottom = 24.0
+mouse_filter = 2
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "<Name>"
+fit_content = true
+
+[node name="SubProgress" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 14.0
+offset_right = 652.0
+offset_bottom = 21.0
+mouse_filter = 2
+theme_type_variation = &"ProgressSubProgress"
+value = 50.0
+show_percentage = false
+
+[node name="MainProgress" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 392.0
+offset_right = 652.0
+offset_bottom = 11.0
+mouse_filter = 2
+value = 50.0
+show_percentage = false
+
+[node name="ExplorePercent" type="Label" parent="."]
+layout_mode = 0
+offset_left = 339.0
+offset_right = 384.0
+offset_bottom = 24.0
+theme_type_variation = &"LabelExplore"
+text = "100%"
+horizontal_alignment = 2
+
+[node name="Eye" type="TextureButton" parent="."]
+visible = false
+offset_left = 666.0
+offset_top = 4.0
+offset_right = 692.0
+offset_bottom = 18.0
+toggle_mode = true
+texture_normal = ExtResource("2_xeo38")
+texture_pressed = ExtResource("3_tt78g")
+texture_hover = ExtResource("4_cpn6c")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="toggled" from="Eye" to="." method="_on_eye_toggled"]

@@ -1,0 +1,163 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3lhlcpmh60ec"]
+
+[ext_resource type="Script" path="res://components/componentScripts/town_controller.gd" id="1_5ahno"]
+[ext_resource type="Texture2D" uid="uid://dufufia1sej2" path="res://images/misc/left-arrow-black.png" id="2_kxy14"]
+[ext_resource type="Texture2D" uid="uid://dm0yl8wgq3rid" path="res://images/misc/left-arrow-red.png" id="3_v42mw"]
+[ext_resource type="Texture2D" uid="uid://bjs4qq7qryla1" path="res://images/misc/visible-eye.png" id="5_aiw2w"]
+[ext_resource type="Texture2D" uid="uid://drspla6j1eyc" path="res://images/misc/hidden-eye.png" id="6_a1bkg"]
+[ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="7_gt4ql"]
+
+[node name="TownController" type="Control"]
+custom_minimum_size = Vector2(720, 925)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1200.0
+offset_bottom = -155.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ahno")
+
+[node name="Towns" type="Control" parent="."]
+custom_minimum_size = Vector2(720, 925)
+anchors_preset = 0
+offset_right = 720.0
+offset_bottom = 925.0
+
+[node name="Headers" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="TownHeader" type="Control" parent="Headers"]
+custom_minimum_size = Vector2(720, 40)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 432.0
+offset_bottom = 24.0
+
+[node name="TownOptions" type="OptionButton" parent="Headers/TownHeader"]
+layout_mode = 0
+offset_left = 200.0
+offset_right = 560.0
+offset_bottom = 40.0
+theme_type_variation = &"LabelTitle"
+flat = true
+alignment = 1
+expand_icon = true
+selected = 0
+item_count = 4
+popup/item_0/text = "Beginnersville"
+popup/item_0/id = 1
+popup/item_1/text = "Forest Path"
+popup/item_1/id = 2
+popup/item_2/text = "Merchanton"
+popup/item_2/id = 3
+popup/item_3/text = "Mt. Olympus"
+popup/item_3/id = 4
+
+[node name="LeftArrow" type="TextureButton" parent="Headers/TownHeader"]
+layout_mode = 0
+offset_left = 120.0
+offset_right = 160.0
+offset_bottom = 40.0
+texture_normal = ExtResource("2_kxy14")
+texture_pressed = ExtResource("3_v42mw")
+texture_hover = ExtResource("3_v42mw")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RightArrow" type="TextureButton" parent="Headers/TownHeader"]
+layout_mode = 0
+offset_left = 573.0
+offset_right = 613.0
+offset_bottom = 40.0
+texture_normal = ExtResource("2_kxy14")
+texture_pressed = ExtResource("3_v42mw")
+texture_hover = ExtResource("3_v42mw")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
+
+[node name="Eye" type="TextureButton" parent="Headers/TownHeader"]
+layout_mode = 0
+offset_left = 666.0
+offset_top = 8.0
+offset_right = 705.0
+offset_bottom = 30.0
+toggle_mode = true
+texture_normal = ExtResource("5_aiw2w")
+texture_pressed = ExtResource("6_a1bkg")
+texture_hover = ExtResource("7_gt4ql")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TownSubHeader" type="Control" parent="Headers"]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 423.0
+offset_right = 720.0
+offset_bottom = 463.0
+
+[node name="Options" type="Label" parent="Headers/TownSubHeader"]
+layout_mode = 0
+offset_right = 720.0
+offset_bottom = 40.0
+theme_type_variation = &"LabelTitle"
+text = "Action Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeftArrow" type="TextureButton" parent="Headers/TownSubHeader"]
+visible = false
+layout_mode = 0
+offset_left = 120.0
+offset_right = 160.0
+offset_bottom = 40.0
+texture_normal = ExtResource("2_kxy14")
+texture_pressed = ExtResource("3_v42mw")
+texture_hover = ExtResource("3_v42mw")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RightArrow" type="TextureButton" parent="Headers/TownSubHeader"]
+layout_mode = 0
+offset_left = 573.0
+offset_right = 613.0
+offset_bottom = 40.0
+texture_normal = ExtResource("2_kxy14")
+texture_pressed = ExtResource("3_v42mw")
+texture_hover = ExtResource("3_v42mw")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
+
+[node name="Stories" type="Label" parent="Headers/TownSubHeader"]
+visible = false
+layout_mode = 0
+offset_right = 720.0
+offset_bottom = 40.0
+theme_type_variation = &"LabelTitle"
+text = "Action Stories"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Eye" type="TextureButton" parent="Headers/TownSubHeader"]
+layout_mode = 0
+offset_left = 666.0
+offset_top = 8.0
+offset_right = 705.0
+offset_bottom = 30.0
+toggle_mode = true
+texture_normal = ExtResource("5_aiw2w")
+texture_pressed = ExtResource("6_a1bkg")
+texture_hover = ExtResource("7_gt4ql")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="item_selected" from="Headers/TownHeader/TownOptions" to="." method="_on_town_options_item_selected"]
+[connection signal="pressed" from="Headers/TownHeader/LeftArrow" to="." method="_town_left"]
+[connection signal="pressed" from="Headers/TownHeader/RightArrow" to="." method="_town_right"]
+[connection signal="toggled" from="Headers/TownHeader/Eye" to="." method="_on_header_eye_toggled"]
+[connection signal="pressed" from="Headers/TownSubHeader/LeftArrow" to="." method="_open_actions"]
+[connection signal="pressed" from="Headers/TownSubHeader/RightArrow" to="." method="_open_stories"]
+[connection signal="toggled" from="Headers/TownSubHeader/Eye" to="." method="_on_sub_header_eye_toggled"]

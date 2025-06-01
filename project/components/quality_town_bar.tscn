@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://8gki3mud4edw"]
+
+[ext_resource type="PackedScene" uid="uid://cp4fc4pxxbvt4" path="res://components/multipart_town_bar.tscn" id="1_7fwb8"]
+[ext_resource type="Script" path="res://components/componentScripts/quality_town_bar.gd" id="1_jrept"]
+[ext_resource type="Texture2D" uid="uid://bjs4qq7qryla1" path="res://images/misc/visible-eye.png" id="3_b8fmt"]
+[ext_resource type="Texture2D" uid="uid://drspla6j1eyc" path="res://images/misc/hidden-eye.png" id="4_p8opu"]
+[ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="5_548g2"]
+
+[node name="QualityTownBar" type="Control"]
+custom_minimum_size = Vector2(693, 44)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1227.0
+offset_bottom = -1029.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jrept")
+
+[node name="QualityBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(652, 8)
+layout_mode = 0
+offset_top = 37.0
+offset_right = 652.0
+offset_bottom = 45.0
+show_percentage = false
+
+[node name="MultipartTownBar" parent="." instance=ExtResource("1_7fwb8")]
+layout_mode = 1
+offset_right = -3.0
+offset_bottom = -11.0
+
+[node name="Eye" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 666.0
+offset_top = 4.0
+offset_right = 692.0
+offset_bottom = 18.0
+toggle_mode = true
+texture_normal = ExtResource("3_b8fmt")
+texture_pressed = ExtResource("4_p8opu")
+texture_hover = ExtResource("5_548g2")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="focus_entered" from="QualityBar" to="." method="_on_quality_bar_focus_entered"]
+[connection signal="focus_exited" from="QualityBar" to="." method="_on_quality_bar_focus_exited"]
+[connection signal="mouse_entered" from="QualityBar" to="." method="_on_quality_bar_mouse_entered"]
+[connection signal="mouse_exited" from="QualityBar" to="." method="_on_quality_bar_mouse_exited"]
+[connection signal="toggled" from="Eye" to="." method="_on_eye_toggled"]

@@ -1,0 +1,8 @@
+Icons used in this are from https://game-icons.net/, under the CC by 3.0 license https://creativecommons.org/licenses/by/3.0/
+
+Some Icons have been modified for the purpose of the game.
+
+Icons:
+https://game-icons.net/1x1/delapouite/plain-arrow.html
+https://game-icons.net/1x1/delapouite/walk.html
+https://game-icons.net/1x1/skoll/sight-disabled.html - edited

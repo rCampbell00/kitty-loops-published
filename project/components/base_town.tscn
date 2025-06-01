@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3 uid="uid://cae87aydmqt3x"]
+
+[ext_resource type="Script" path="res://components/componentScripts/base_town.gd" id="1_d8hly"]
+
+[node name="BaseTown" type="Panel"]
+custom_minimum_size = Vector2(720, 925)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1200.0
+offset_bottom = -155.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"panelTown1"
+script = ExtResource("1_d8hly")
+
+[node name="TownExplorations" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 42.0
+offset_right = 716.0
+offset_bottom = 422.0
+theme_type_variation = &"subTownPanel"
+
+[node name="M" type="MarginContainer" parent="TownExplorations"]
+layout_mode = 0
+offset_right = 712.0
+offset_bottom = 380.0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="S" type="ScrollContainer" parent="TownExplorations/M"]
+layout_mode = 2
+
+[node name="V" type="VBoxContainer" parent="TownExplorations/M/S"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+
+[node name="TownActions" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 464.0
+offset_right = 716.0
+offset_bottom = 819.0
+theme_type_variation = &"subTownPanel"
+
+[node name="M" type="MarginContainer" parent="TownActions"]
+layout_mode = 0
+offset_right = 712.0
+offset_bottom = 355.0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="S" type="ScrollContainer" parent="TownActions/M"]
+layout_mode = 2
+
+[node name="H" type="HFlowContainer" parent="TownActions/M/S"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+alignment = 1
+
+[node name="TransitionActions" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 821.0
+offset_right = 716.0
+offset_bottom = 921.0
+theme_type_variation = &"subTownPanel"
+
+[node name="M" type="MarginContainer" parent="TransitionActions"]
+custom_minimum_size = Vector2(428, 59)
+layout_mode = 0
+offset_right = 712.0
+offset_bottom = 100.0
+theme_override_constants/margin_top = 3
+
+[node name="S" type="ScrollContainer" parent="TransitionActions/M"]
+custom_minimum_size = Vector2(428, 59)
+layout_mode = 2
+
+[node name="H" type="HFlowContainer" parent="TransitionActions/M/S"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
