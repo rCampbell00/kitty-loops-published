@@ -15,7 +15,7 @@ run/main_scene="res://GUI.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0.239686, 0.309012, 0.1397, 1)
 boot_splash/image="res://images/actionIcons/wander.png"
-config/icon="res://icon.svg"
+config/icon="res://images/actionIcons/wander.png"
 
 [autoload]
 
