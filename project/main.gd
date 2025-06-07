@@ -9,6 +9,4 @@ func _ready() -> void:
 
 
 
-#TODO - on loading a player save file, update visibility and all information relating to the player
-# This inlcude if an action/exploration has been hidden or not
-# And if the action has been completed or not prior (update ! and bool value)
+#TODO - Setup a timer to save every x amount of seconds

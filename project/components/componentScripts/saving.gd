@@ -96,19 +96,19 @@ func _on_load_dialogue_file_selected(path: String) -> void:
 	EventBus.load_game(path)
 	
 
-
+#Code for importing on web from:
+#http://kehomsforge.com/tutorials/single/save-load-file-system-godot-html-export/
 func _on_file_import_pressed() -> void:
 	var os :=  OS.get_name()
 	if os == "Web":
-		if OS.has_feature("JavaScript"):
-			JavaScriptBridge.eval("loadData()")
+		JavaScriptBridge.eval("loadData()")
 	else:
 		$LoadDialogue.show()
 
 func _on_data_loaded(data: Array) -> void:
 	if data.size() == 0:
 		return
-	print(data[0])
+	EventBus.attempt_decode_save(data[0])
 
 func _on_save_panel_mouse_entered() -> void:
 	if has_node("save_time_out"):
