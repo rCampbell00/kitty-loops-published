@@ -11,4 +11,4 @@ func _init() -> void:
 	self.town_changes = {0: [2]}
 	#self.action_end_cost = {"supplies": 1}
 	self.visible_req = {"town_progress": {"wander": 1}}
-	self.unlocked_req = {"town_progress": {"wander": 200}}
+	self.unlocked_req = {"town_progress": {"wander": 1}}

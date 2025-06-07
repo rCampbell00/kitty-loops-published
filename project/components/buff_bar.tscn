@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmjdjqroh2gdp"]
+
+[ext_resource type="Script" path="res://components/componentScripts/buff_bar.gd" id="1_6f43g"]
+
+[node name="BuffBar" type="Control"]
+visible = false
+custom_minimum_size = Vector2(380, 20)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1540.0
+offset_bottom = -1060.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6f43g")
+
+[node name="BuffName" type="Label" parent="."]
+custom_minimum_size = Vector2(358, 20)
+layout_mode = 0
+offset_left = 22.0
+offset_right = 380.0
+offset_bottom = 20.0
+theme_type_variation = &"LabelItems"
+text = "<Buff Name>"
+
+[node name="BuffImage" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+expand_mode = 1
+
+[node name="BuffLevel" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 0
+offset_left = 213.0
+offset_right = 313.0
+offset_bottom = 20.0
+text = "0/"
+horizontal_alignment = 2
+
+[node name="BuffCap" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 0
+offset_left = 316.0
+offset_top = -4.0
+offset_right = 380.0
+offset_bottom = 23.0
+text = "666"
+context_menu_enabled = false
+virtual_keyboard_type = 2
+flat = true
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="text_changed" from="BuffCap" to="." method="_on_buff_cap_text_changed"]

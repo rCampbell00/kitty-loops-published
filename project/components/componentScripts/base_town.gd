@@ -181,6 +181,15 @@ func update_hidden_completion_action(action_id: String) -> void:
 	else:
 		$TownActions/M/S/H.get_node(action_id).update_status(hidden_status, action_complete_status, action_story_unread, all_stories)
 
+func reset_action_highlight(action_id: String) -> void:
+	var action := self.town_data.get_action(action_id)
+	var action_complete_status : bool = self.town_data.actions_completed[action_id]
+	if action is TransitionActionData:
+		$TransitionActions/M/S/H.get_node(action_id).reset_action_highlight(action_complete_status)
+	else:
+		$TownActions/M/S/H.get_node(action_id).reset_action_highlight(action_complete_status)
+
+
 func reset_town_view() -> void:
 	var loot_data := self.town_data.get_lootables_id()
 	for loot_id in loot_data:
@@ -199,9 +208,10 @@ func reset_town_view() -> void:
 		self.update_hidden_completion_action(action_id)
 	self.update_all_visibility()
 
+func reset_action_highlights() -> void:
+	for action_id in self.town_data.town_actions:
+		self.reset_action_highlight(action_id)
+	
+
 func _update_looting(lootable_id: String, state: bool) -> void:
-	if state == true:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	self.town_data.change_check_new(lootable_id, state)

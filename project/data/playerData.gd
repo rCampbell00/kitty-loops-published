@@ -16,8 +16,11 @@ var stats := {}
 # Dictionary of skills
 #	Skill level, skill exp, exp needed for next level, effects?
 var skills := {}
+var self_combat := 0
+var team_combat := 0
 # Dictionary of buffs
 var buffs := {}
+var chosen_buff_caps := {}
 # Dictionary of boons
 var boons := {}
 # Dictionary of current resources the player has
@@ -59,6 +62,14 @@ func _init() -> void:
 	for buff in Actions.buff_list:
 		self.buffs[buff] = base_boost_level.new()
 		self.buffs[buff].setup_action(self, Actions.buff_list[buff])
+		var buff_data : BaseActionData = Actions.buff_list[buff]
+		if buff_data is MultipartActionData:
+			if "buffs" in buff_data.loop_reward and buff in buff_data.loop_reward["buffs"]:
+				self.chosen_buff_caps[buff] = buff_data.loop_reward["buffs"][buff]["cap"]
+			else:
+				self.chosen_buff_caps[buff] = buff_data.completion_resources["buffs"][buff]["cap"]
+		else:
+			self.chosen_buff_caps[buff] = buff_data.completion_resources["buffs"][buff]["cap"]
 	for boon in Actions.boon_list:
 		self.boons[boon] = base_boost_level.new()
 		self.boons[boon].setup_action(self, Actions.boon_list[boon])
@@ -81,6 +92,7 @@ func reset_player() -> void:
 	self.global_multipliers = {}
 	self.current_town = 1
 	self.resources = {"mana": 250}
+	self.calc_combat_stats()
 	if self.main_player:
 		var town_update := {}
 		for world in range(len(self.world_towns)):
@@ -99,6 +111,11 @@ func add_stat_exp(stat_name: String, exp_gained: int) -> void:
 	stat_data["stat"].add_exp(floor(exp_gained * self.stat_exp_mult(stat_name)), self)
 	stat_data["talent"].add_exp(floor(exp_gained * self.talent_exp_mult(stat_name)), self)
 
+func get_stat_data(stat_type: String) -> Dictionary:
+	return self.stats[stat_type]
+
+func get_talent_boost(stat_type: String) -> float:
+	return self.stats[stat_type]["talent"].calc_boost(self)
 
 #Take into account multipliers from buffs/talent - check exp_needed, recalc boost and add to talent
 func add_exp(exp_gained: Dictionary) -> void:
@@ -151,12 +168,20 @@ func add_resource(resource: String, base_amount: int) -> void:
 		self.resources[resource] = amount
 	else:
 		self.resources[resource] += amount
+	if resource in Actions.combat_resource_update_flags:
+		self.calc_combat_stats()
 
 func calc_skill_effects(skill: String) -> void:
 	if skill not in self.skills:
 		return
 	
 	self.skills[skill].calc_boosts(self)
+
+func calc_combat_stats() -> void:
+	self.self_combat = Actions.get_self_combat(self)
+	self.team_combat = Actions.get_team_combat(self)
+	if self.main_player:
+		ViewHandler.request_update("update_combat_values", {"combat": true})
 
 func calc_buff_effects(buff: String) -> void:
 	if buff not in self.buffs:
@@ -174,41 +199,52 @@ func add_skill(skill: String, xp_amount: int) -> void:
 	if skill not in self.skills:
 		return
 	var did_level : bool = self.skills[skill].add_exp(xp_amount, self)
+	if did_level:
+		if skill in Actions.combat_skill_update_flags:
+			self.calc_combat_stats()
+		if skill in Actions.skill_to_lootable_flags:
+			for action in Actions.skill_to_lootable_flags[skill]:
+				self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 	if self.main_player:
 		EventBus.skill_increase(skill, self, did_level)
-	if did_level and skill in Actions.skill_to_lootable_flags:
-		for action in Actions.skill_to_lootable_flags[skill]:
-			self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 
 func add_buff(buff: String, amount: int) -> void:
 	if buff not in self.buffs:
 		return
 	var did_level : bool = self.buffs[buff].add_exp(amount, self)
+	if did_level:
+		if buff in Actions.combat_buff_update_flags:
+			self.calc_combat_stats()
+		if buff in Actions.buff_to_lootable_flags:
+			for action in Actions.buff_to_lootable_flags[buff]:
+				self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 	if self.main_player:
 		EventBus.buff_increase(buff, self, did_level)
-	if did_level and buff in Actions.buff_to_lootable_flags:
-		for action in Actions.buff_to_lootable_flags[buff]:
-			self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 
 func add_boon(boon: String, amount: int) -> void:
 	if boon not in self.boons:
 		return
 	var did_level : bool = self.boons[boon].add_exp(amount, self)
+	if did_level:
+		if boon in Actions.combat_boon_update_flags:
+			self.calc_combat_stats()
+		if boon in Actions.boon_to_lootable_flags:
+			for action in Actions.boon_to_lootable_flags[boon]:
+				self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 	if self.main_player:
 		EventBus.boon_increase(boon, self, did_level)
-	if did_level and boon in Actions.boon_to_lootable_flags:
-		for action in Actions.boon_to_lootable_flags[boon]:
-			self.world_towns[action.world_num][action.town_num].update_lootable_total(action.action_id)
 
 func add_team_member(action_id: String, combat_value: int) -> void:
 	self.current_team_member_combat += combat_value
 	self.get_town_from_action(action_id).add_team_member(action_id, combat_value)
+	self.calc_combat_stats()
 	if self.main_player:
 		ViewHandler.request_update("update_team_members", {action_id: true})
 
 func remove_team_member(action_id: String) -> void:
 	var combat_value = self.get_town_from_action(action_id).remove_team_member(action_id)
 	self.current_team_member_combat -= combat_value
+	self.calc_combat_stats()
 	if self.main_player:
 		ViewHandler.request_update("update_team_members", {action_id: false})
 
@@ -251,10 +287,13 @@ func get_town_progress(progress_id: String) -> int:
 
 func get_skill_level(skill: String) -> int:
 	if skill == "self_combat":
-		return Actions.get_self_combat(self)
+		return self.self_combat
 	if skill == "team_combat":
-		return Actions.get_team_combat(self)
+		return self.team_combat
 	return self.skills[skill].get_level()
+
+func get_skill_data(skill: String) -> BoostLevel:
+	return self.skills[skill]
 
 func get_total_team_value() -> int:
 	return self.current_team_member_combat
@@ -308,15 +347,14 @@ func check_town_lootable(action_id: String) -> bool:
 func get_lootable_data(action_id: String) -> Dictionary:
 	return self.get_town_from_action(action_id).get_lootable_data(action_id)
 
-func change_town(town_number: int, world_number: int) -> void:
+func change_town(town_number: int) -> void:
 	self.current_town = town_number
-	self.current_world = world_number
 	self.current_sub_town = 0
-	if self.main_player and not (town_number in self.towns_unlocked[world_number]):
-		self.towns_unlocked[world_number].append(town_number)
-		self.towns_unlocked[world_number].sort()
+	if self.main_player and not (town_number in self.towns_unlocked[self.current_world]):
+		self.towns_unlocked[self.current_world].append(town_number)
+		self.towns_unlocked[self.current_world].sort()
 
-		ViewHandler.request_update("update_town_visibility", {world_number: town_number})
+		ViewHandler.request_update("update_town_visibility", {self.current_world: town_number})
 
 func unlock_world(world_number: int) -> void:
 	if world_number in self.worlds_unlocked:
@@ -373,6 +411,7 @@ func get_save_dict() -> Dictionary:
 	for boon in self.boons:
 		save_dict["boons"][boon] = self.boons[boon].get_save_dict()
 	save_dict["soulstones"] = self.soul_stones
+	save_dict["buff_caps"] = self.chosen_buff_caps
 	save_dict["worlds_unlocked"] = self.worlds_unlocked
 	save_dict["towns_unlocked"] = self.towns_unlocked
 	save_dict["towns"] = {}
@@ -397,63 +436,119 @@ func load_save_dict(save_dict: Dictionary) -> void:
 	self.global_multipliers = {}
 	self.current_town = 1
 	self.resources = {"mana": 250}
-	if typeof(save_dict["talents"]) == TYPE_DICTIONARY:
-		for stat in self.stats:
-			if stat in save_dict["talents"]:
-				self.stats[stat]["talent"].load_save_dict(save_dict["talents"][stat], self)
+	self.team_combat = 0
+	self.self_combat = 0
+	for buff in Actions.buff_list:
+		var buff_data : BaseActionData = Actions.buff_list[buff]
+		if buff_data is MultipartActionData:
+			if "buffs" in buff_data.loop_reward and buff in buff_data.loop_reward["buffs"]:
+				self.chosen_buff_caps[buff] = buff_data.loop_reward["buffs"][buff]["cap"]
 			else:
-				self.stats[stat]["talent"].clear(self)
-	if typeof(save_dict["skills"]) == TYPE_DICTIONARY:
-		for skill in self.skills:
-			if skill in save_dict["skills"]:
-				self.skills[skill].load_save_dict(save_dict["skills"][skill], self)
-			else:
-				self.skills[skill].clear(self)
-	if typeof(save_dict["buffs"]) == TYPE_DICTIONARY:
-		for buff in self.buffs:
-			if buff in save_dict["buffs"]:
-				self.buffs[buff].load_save_dict(save_dict["buffs"][buff], self)
-			else:
-				self.buffs[buff].clear(self)
-	if typeof(save_dict["boons"]) == TYPE_DICTIONARY:
-		for boon in self.boons:
-			if boon in save_dict["boons"]:
-				self.boons[boon].load_save_dict(save_dict["boons"][boon], self)
-			else:
-				self.boons[boon].clear(self)
+				self.chosen_buff_caps[buff] = buff_data.completion_resources["buffs"][buff]["cap"]
+		else:
+			self.chosen_buff_caps[buff] = buff_data.completion_resources["buffs"][buff]["cap"]
+	if (not "talents" in save_dict) or typeof(save_dict["talents"]) != TYPE_DICTIONARY:
+		save_dict["talents"] = {}
+	for stat in self.stats:
+		if stat in save_dict["talents"]:
+			self.stats[stat]["talent"].load_save_dict(save_dict["talents"][stat], self)
+		else:
+			self.stats[stat]["talent"].clear(self)
+	if (not "skills" in save_dict) or typeof(save_dict["skills"]) != TYPE_DICTIONARY:
+		save_dict["skills"] = {}
+	for skill in self.skills:
+		if skill in save_dict["skills"]:
+			self.skills[skill].load_save_dict(save_dict["skills"][skill], self)
+		else:
+			self.skills[skill].clear(self)
+	if (not "buffs" in save_dict) or typeof(save_dict["buffs"]) != TYPE_DICTIONARY:
+		save_dict["buffs"] = {}
+	for buff in self.buffs:
+		if buff in save_dict["buffs"]:
+			self.buffs[buff].load_save_dict(save_dict["buffs"][buff], self)
+		else:
+			self.buffs[buff].clear(self)
+	if (not "boons" in save_dict) or typeof(save_dict["boons"]) != TYPE_DICTIONARY:
+		save_dict["boons"] = {}
+	for boon in self.boons:
+		if boon in save_dict["boons"]:
+			self.boons[boon].load_save_dict(save_dict["boons"][boon], self)
+		else:
+			self.boons[boon].clear(self)
+	if (not "buff_caps" in save_dict) or typeof(save_dict["buff_caps"]) != TYPE_DICTIONARY:
+		save_dict["buff_caps"] = {}
+	for buff in self.chosen_buff_caps:
+		if buff in save_dict["buff_caps"]:
+			self.chosen_buff_caps[buff] = clampi(int(save_dict["buff_caps"][buff]), 0, self.chosen_buff_caps[buff])
 	self.soul_stones = {"base": 0, "chunk": 0, "pristine": 0}
-	if typeof(save_dict["soulstones"]) == TYPE_DICTIONARY:
-		self.soul_stones["base"] = int(save_dict["soulstones"]["base"])
-		self.soul_stones["chunk"] = int(save_dict["soulstones"]["chunk"])
-		self.soul_stones["pristine"] = int(save_dict["soulstones"]["pristine"])
+	if (not "soulstones" in save_dict) or typeof(save_dict["soulstones"]) != TYPE_DICTIONARY:
+		save_dict["soulstones"] = {"base": 0, "chunk": 0, "pristine": 0}
+	if (not "base" in save_dict["soulstones"]) or typeof(save_dict["soulstones"]["base"] != TYPE_FLOAT):
+		save_dict["soulstones"]["base"] = 0
+	if (not "chunk" in save_dict["soulstones"]) or typeof(save_dict["soulstones"]["chunk"] != TYPE_FLOAT):
+		save_dict["soulstones"]["chunk"] = 0
+	if (not "pristine" in save_dict["soulstones"]) or typeof(save_dict["soulstones"]["pristine"] != TYPE_FLOAT):
+		save_dict["soulstones"]["pristine"] = 0
+	self.soul_stones["base"] = int(save_dict["soulstones"]["base"])
+	self.soul_stones["chunk"] = int(save_dict["soulstones"]["chunk"])
+	self.soul_stones["pristine"] = int(save_dict["soulstones"]["pristine"])
 	self.worlds_unlocked = []
-	if typeof(save_dict["worlds_unlocked"]) == TYPE_ARRAY:
-		for world in save_dict["worlds_unlocked"]:
-			self.worlds_unlocked.append(int(world))
-	if typeof(save_dict["towns_unlocked"]) == TYPE_ARRAY and len(save_dict["towns_unlocked"]) == len(self.towns_unlocked):
-		self.terra_towns_unlocked = []
-		self.celestial_towns_unlocked = []
-		self.shadow_towns_unlocked = []
-		self.towns_unlocked = [self.terra_towns_unlocked,self.celestial_towns_unlocked,self.shadow_towns_unlocked]
-		for town in save_dict["towns_unlocked"][0]:
-			self.terra_towns_unlocked.append(int(town))
-		for town in save_dict["towns_unlocked"][1]:
-			self.celestial_towns_unlocked.append(int(town))
-		for town in save_dict["towns_unlocked"][2]:
-			self.shadow_towns_unlocked.append(int(town))
-	if typeof(save_dict["towns"]) == TYPE_DICTIONARY:
-		for town in self.terra_towns:
-			if str(town) in save_dict["towns"]["terra_towns"]:
-				self.terra_towns[town].load_save_dict(save_dict["towns"]["terra_towns"][str(town)])
-			else:
-				self.terra_towns[town].clear()
-		for town in self.celestial_towns:
-			if str(town) in save_dict["towns"]["celestial_towns"]:
-				self.celestial_towns[town].load_save_dict(save_dict["towns"]["celestial_towns"][str(town)])
-			else:
-				self.celestial_towns[town].clear()
-		for town in self.shadow_towns:
-			if str(town) in save_dict["towns"]["shadow_towns"]:
-				self.shadow_towns[town].load_save_dict(save_dict["towns"]["shadow_towns"][str(town)])
-			else:
-				self.shadow_towns[town].clear()
+	if (not "worlds_unlocked" in save_dict) or typeof(save_dict["worlds_unlocked"]) == TYPE_ARRAY:
+		save_dict["worlds_unlocked"] = [0]
+	for world in save_dict["worlds_unlocked"]:
+		self.worlds_unlocked.append(int(world))
+	if (not "towns_unlocked" in save_dict) or (typeof(save_dict["towns_unlocked"]) != TYPE_ARRAY) or len(save_dict["towns_unlocked"]) != len(self.towns_unlocked):
+		save_dict["towns_unlocked"] = [[1],[],[]]
+	if typeof(save_dict["towns_unlocked"][0]) != TYPE_ARRAY:
+		save_dict["towns_unlocked"][0] = [1]
+	for item in save_dict["towns_unlocked"][0]:
+		if typeof(item) != TYPE_FLOAT:
+			save_dict["towns_unlocked"][0] = [1]
+	if typeof(save_dict["towns_unlocked"][1]) != TYPE_ARRAY:
+		save_dict["towns_unlocked"][1] = []
+	for item in save_dict["towns_unlocked"][1]:
+		if typeof(item) != TYPE_FLOAT:
+			save_dict["towns_unlocked"][1] = []
+	if typeof(save_dict["towns_unlocked"][2]) != TYPE_ARRAY:
+		save_dict["towns_unlocked"][2] = []
+	for item in save_dict["towns_unlocked"][2]:
+		if typeof(item) != TYPE_FLOAT:
+			save_dict["towns_unlocked"][2] = []
+	
+	self.terra_towns_unlocked = []
+	self.celestial_towns_unlocked = []
+	self.shadow_towns_unlocked = []
+	self.towns_unlocked = [self.terra_towns_unlocked,self.celestial_towns_unlocked,self.shadow_towns_unlocked]
+	for town in save_dict["towns_unlocked"][0]:
+		self.terra_towns_unlocked.append(int(town))
+	for town in save_dict["towns_unlocked"][1]:
+		self.celestial_towns_unlocked.append(int(town))
+	for town in save_dict["towns_unlocked"][2]:
+		self.shadow_towns_unlocked.append(int(town))
+	if (not "towns" in save_dict) or typeof(save_dict["towns"]) != TYPE_DICTIONARY:
+		save_dict["towns"] = {"terra_towns": {}, "celestial_towns": {}, "shadow_towns": {}}
+	if (not "terra_towns" in save_dict["towns"]) or typeof(save_dict["towns"]["terra_towns"]) != TYPE_DICTIONARY:
+		save_dict["towns"]["terra_towns"] = {}
+	if (not "celestial_towns" in save_dict["towns"]) or typeof(save_dict["towns"]["celestial_towns"]) != TYPE_DICTIONARY:
+		save_dict["towns"]["celestial_towns"] = {}
+	if (not "shadow_towns" in save_dict["towns"]) or typeof(save_dict["towns"]["shadow_towns"]) != TYPE_DICTIONARY:
+		save_dict["towns"]["shadow_towns"] = {}
+	for town in self.terra_towns:
+		if str(town) in save_dict["towns"]["terra_towns"]:
+			self.terra_towns[town].load_save_dict(save_dict["towns"]["terra_towns"][str(town)])
+		else:
+			self.terra_towns[town].clear_data()
+	for town in self.celestial_towns:
+		if str(town) in save_dict["towns"]["celestial_towns"]:
+			self.celestial_towns[town].load_save_dict(save_dict["towns"]["celestial_towns"][str(town)])
+		else:
+			self.celestial_towns[town].clear_data()
+	for town in self.shadow_towns:
+		if str(town) in save_dict["towns"]["shadow_towns"]:
+			self.shadow_towns[town].load_save_dict(save_dict["towns"]["shadow_towns"][str(town)])
+		else:
+			self.shadow_towns[town].clear_data()
+	self.calc_combat_stats()
+	for world in self.world_towns:
+		for town in world:
+			world[town].recalc_lootables()

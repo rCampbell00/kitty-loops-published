@@ -6,3 +6,4 @@ Icons:
 https://game-icons.net/1x1/delapouite/plain-arrow.html
 https://game-icons.net/1x1/delapouite/walk.html
 https://game-icons.net/1x1/skoll/sight-disabled.html - edited
+https://game-icons.net/1x1/delapouite/book-pile.html

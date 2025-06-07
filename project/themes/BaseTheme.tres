@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=95 format=3 uid="uid://cw6lbeq727laj"]
+[gd_resource type="Theme" load_steps=96 format=3 uid="uid://cw6lbeq727laj"]
 
 [ext_resource type="Texture2D" uid="uid://c4x68yi2u1y5e" path="res://images/misc/down-arrow.png" id="1_4phcr"]
 
@@ -106,17 +106,17 @@ corner_radius_bottom_left = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5x4mx"]
 draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0.298039, 0.686275, 0.313726, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1fdjf"]
 draw_center = false
-border_width_left = 1
-border_width_right = 1
-border_width_bottom = 1
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(0.298039, 0.686275, 0.313726, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_61tof"]
@@ -220,6 +220,18 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tp8fv"]
+bg_color = Color(0.752941, 0.894118, 0.780392, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6qc7"]
 bg_color = Color(0.894118, 0.92549, 0.898039, 1)
 
@@ -237,14 +249,19 @@ corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62iji"]
 bg_color = Color(0.752941, 0.894118, 0.780392, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.874592, 0, 0.241596, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kugk3"]
+bg_color = Color(0.752941, 0.894118, 0.780392, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kugk3"]
-bg_color = Color(0.752941, 0.894118, 0.780392, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l71ne"]
 content_margin_left = 2.0
@@ -784,6 +801,9 @@ LineEdit/colors/clear_button_color = Color(0, 0, 0, 1)
 LineEdit/colors/clear_button_color_pressed = Color(0.259294, 0.259294, 0.259294, 1)
 LineEdit/colors/font_color = Color(0, 0, 0, 1)
 LineEdit/styles/normal = SubResource("StyleBoxFlat_sncii")
+LinkButton/colors/font_color = Color(0, 0, 0, 1)
+LinkButton/colors/font_hover_color = Color(0.116662, 0.222501, 0.491239, 1)
+LinkButton/colors/font_pressed_color = Color(0, 0, 0, 1)
 MenuButton/colors/font_color = Color(0, 0, 0, 1)
 MenuButton/colors/font_focus_color = Color(0, 0, 0, 1)
 MenuButton/colors/font_hover_color = Color(0, 0, 0, 1)
@@ -794,6 +814,8 @@ OptionButton/colors/font_hover_color = Color(0, 0, 0, 1)
 OptionButton/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 OptionButton/colors/font_pressed_color = Color(0, 0, 0, 1)
 OptionButton/icons/arrow = ExtResource("1_4phcr")
+OptionPanel/base_type = &"Panel"
+OptionPanel/styles/panel = SubResource("StyleBoxFlat_tp8fv")
 Panel/styles/panel = SubResource("StyleBoxFlat_k6qc7")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_a0i6l")
 PopupMenu/colors/font_color = Color(0, 0, 0, 1)

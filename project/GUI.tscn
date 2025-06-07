@@ -1,17 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmmlm6uj54h8i"]
+[gd_scene load_steps=12 format=3 uid="uid://dmmlm6uj54h8i"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_5grw4"]
 [ext_resource type="PackedScene" uid="uid://dh44s0cldd6or" path="res://components/skillsContainer.tscn" id="1_yh6w0"]
+[ext_resource type="PackedScene" uid="uid://0gaj2vly7s1u" path="res://components/options.tscn" id="2_a0dg1"]
+[ext_resource type="PackedScene" uid="uid://dlnlbjrqd3qau" path="res://components/changelog.tscn" id="2_vh8js"]
 [ext_resource type="PackedScene" uid="uid://7qxq1t0uyju0" path="res://components/world_controller.tscn" id="3_fks6h"]
+[ext_resource type="PackedScene" uid="uid://c4axroi1r0n5e" path="res://components/buff_container.tscn" id="4_0ijay"]
+[ext_resource type="PackedScene" uid="uid://ccm8jjxh5yowy" path="res://components/boon_container.tscn" id="5_d1564"]
+[ext_resource type="PackedScene" uid="uid://basmynf8sj11d" path="res://components/stats_container.tscn" id="6_s5w2d"]
+[ext_resource type="PackedScene" uid="uid://dvumtag4nh0ow" path="res://components/saving.tscn" id="8_uqotc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_l6u2x"]
 font_size = 10
 
 [sub_resource type="LabelSettings" id="LabelSettings_taiqg"]
 font_size = 12
-
-[sub_resource type="LabelSettings" id="LabelSettings_v4md7"]
-font_size = 10
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -63,41 +66,11 @@ offset_bottom = 50.0
 theme_type_variation = &"LabelItems"
 text = "Mana: 0 | Holy Power: 0 | Gold: 0"
 
-[node name="ChangelogButton" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 30.0
-offset_right = 136.0
-offset_bottom = 63.0
-metadata/_edit_group_ = true
-
-[node name="Label" type="Label" parent="ChangelogButton"]
-layout_mode = 2
-text = "Changelog"
-label_settings = SubResource("LabelSettings_taiqg")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="OptionsButton" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 146.0
-offset_top = 30.0
-offset_right = 256.0
-offset_bottom = 63.0
-metadata/_edit_group_ = true
-
-[node name="Label" type="Label" parent="OptionsButton"]
-layout_mode = 2
-text = "Options"
-label_settings = SubResource("LabelSettings_taiqg")
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Guide Button" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 266.0
+offset_left = 394.0
 offset_top = 30.0
-offset_right = 376.0
+offset_right = 504.0
 offset_bottom = 63.0
 metadata/_edit_group_ = true
 
@@ -111,9 +84,9 @@ vertical_alignment = 1
 
 [node name="Stats Button" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 386.0
+offset_left = 514.0
 offset_top = 30.0
-offset_right = 496.0
+offset_right = 624.0
 offset_bottom = 63.0
 metadata/_edit_group_ = true
 
@@ -123,159 +96,6 @@ text = "Stats"
 label_settings = SubResource("LabelSettings_taiqg")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Stats" type="GridContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 120.0
-offset_right = 426.0
-offset_bottom = 320.0
-columns = 3
-
-[node name="Stat" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat2" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat2"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat3" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat3"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat4" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat4"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat5" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat5"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat6" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat6"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat7" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat7"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat8" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat8"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="Stat9" type="PanelContainer" parent="Stats"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="Stats/Stat9"]
-layout_mode = 2
-text = "Dex"
-label_settings = SubResource("LabelSettings_v4md7")
-
-[node name="PanelContainer3" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 603.0
-offset_right = 426.0
-offset_bottom = 803.0
-
-[node name="PanelContainer4" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 845.0
-offset_right = 426.0
-offset_bottom = 1045.0
-
-[node name="StatsLabel" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 78.0
-offset_right = 426.0
-offset_bottom = 118.0
-
-[node name="Label" type="Label" parent="StatsLabel"]
-layout_mode = 2
-text = "Stats"
-horizontal_alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="Buffs" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 562.0
-offset_right = 426.0
-offset_bottom = 602.0
-
-[node name="Label" type="Label" parent="Buffs"]
-layout_mode = 2
-text = "Buffs
-"
-horizontal_alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="Boons" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = 26.0
-offset_top = 804.0
-offset_right = 426.0
-offset_bottom = 844.0
-
-[node name="Label" type="Label" parent="Boons"]
-layout_mode = 2
-text = "Boons
-"
-horizontal_alignment = 1
-metadata/_edit_lock_ = true
 
 [node name="ActionList" type="PanelContainer" parent="."]
 layout_mode = 0
@@ -401,3 +221,45 @@ offset_left = 1174.0
 offset_top = 120.0
 offset_right = -26.0
 offset_bottom = -35.0
+
+[node name="Buffs" parent="." instance=ExtResource("4_0ijay")]
+layout_mode = 1
+offset_left = 26.0
+offset_top = 562.0
+offset_right = -1494.0
+offset_bottom = -278.0
+
+[node name="Boons" parent="." instance=ExtResource("5_d1564")]
+layout_mode = 1
+offset_left = 26.0
+offset_top = 804.0
+offset_right = -1494.0
+offset_bottom = -36.0
+
+[node name="Stats" parent="." instance=ExtResource("6_s5w2d")]
+layout_mode = 1
+offset_left = 26.0
+offset_top = 78.0
+offset_right = -1494.0
+offset_bottom = -762.0
+
+[node name="Options" parent="." instance=ExtResource("2_a0dg1")]
+layout_mode = 0
+offset_left = 279.0
+offset_top = 31.0
+offset_right = 379.0
+offset_bottom = 64.0
+
+[node name="Saving" parent="." instance=ExtResource("8_uqotc")]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 31.0
+offset_right = 268.0
+offset_bottom = 64.0
+
+[node name="Changelog" parent="." instance=ExtResource("2_vh8js")]
+layout_mode = 2
+offset_left = 27.0
+offset_top = 31.0
+offset_right = 141.0
+offset_bottom = 64.0

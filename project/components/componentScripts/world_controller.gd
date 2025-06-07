@@ -6,7 +6,6 @@ func _ready() -> void:
 	worlds = [$TerraTowns]
 
 func setup_actions() -> void:
-	EventBus.add_world_controller(self)
 	var terra_actions := {}
 	var celestial_actions := {}
 	var shadow_actions := {}
@@ -25,3 +24,7 @@ func update_world(world_index: int, town_index: int) -> void:
 func reset_world_view() -> void:
 	for world in self.worlds:
 		world.reset_world_view()
+		
+func reset_action_highlights() -> void:
+	for world in self.worlds:
+		world.reset_action_highlights()

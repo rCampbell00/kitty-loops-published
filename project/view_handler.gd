@@ -4,9 +4,9 @@ extends Node
 var events := {
 	## Update the progress bar for the skills, update action text which use these, update unlock for skills which need these
 	## Also need to update lootables that are affected
-	"skill_increase": {}, #TODO
-	"buff_increase": {}, #TODO
-	"boon_increase": {}, #TODO
+	"skill_increase": {},
+	"buff_increase": {},
+	"boon_increase": {},
 	## Update progress bar
 	"town_progress_increase": {},
 	## Update the given value within the town
@@ -17,14 +17,13 @@ var events := {
 	"update_team_members": {}, #TODO
 	"update_soul_stones": {}, #TODO
 	## Update info in the given town, also tell town controller to update its arrows
-	"update_action_highlight": {}, #TODO
-	"update_story_highlight": {}, #TODO
+	"update_action_highlight": {},
+	"update_story_highlight": {},
 	## Update the town/world controller and make a request to update action visibility
 	"update_town_visibility": {},
 	"update_world_visibility": {}, #TODO
 	"update_town_action": {},
-	"remove_alert": {},
-	"new_story": {}
+	"update_combat_values": {},
 }
 
 
@@ -40,34 +39,23 @@ func update_actions(action_list: Array) -> void:
 	for action in action_list:
 		var indexes = Actions.action_to_world_town[action]
 		EventBus.town_index_to_node[indexes[0]][indexes[1]].update_action(action)
-		# Needs to update actions story
-		
 
 func skill_increase(update_info: Dictionary) -> void:
 	for skill in update_info:
-		# Call view update on skill bar
+		EventBus.skill_container.update_skill(skill)
 		if update_info[skill]:
-			if skill in Actions.combat_update_flags:
-				pass
-			# Update skills story
 			self.update_actions(EventBus.skill_subscriptions[skill])
 
 func buff_increase(update_info: Dictionary) -> void:
 	for buff in update_info:
-		# Call view update on buff bar
+		EventBus.buff_container.update_buff(buff)
 		if update_info[buff]:
-			if buff in Actions.combat_update_flags:
-				pass
-			# Update buff story
 			self.update_actions(EventBus.buff_subscriptions[buff])
 
 func boon_increase(update_info: Dictionary) -> void:
 	for boon in update_info:
-		# Call view update on boon bar
+		EventBus.boon_container.update_boon(boon)
 		if update_info[boon]:
-			if boon in Actions.combat_update_flags:
-				pass
-			# Update boon story
 			self.update_actions(EventBus.boon_subscriptions[boon])
 
 func town_lootable_collected(update_info: Dictionary) -> void:
@@ -107,10 +95,14 @@ func update_soul_stones(update_info: Dictionary) -> void:
 	pass
 
 func update_action_highlight(update_info: Dictionary) -> void:
-	pass
+	for action in update_info:
+		var indexes = Actions.action_to_world_town[action]
+		EventBus.town_index_to_node[indexes[0]][indexes[1]].remove_action_highlight(action)
 
 func update_story_highlight(update_info: Dictionary) -> void:
-	pass
+	for action in update_info:
+		var indexes = Actions.action_to_world_town[action]
+		EventBus.town_index_to_node[indexes[0]][indexes[1]].add_story_highlight(action, update_info[action])
 
 func update_world_visibility(update_info: Dictionary) -> void:
 	pass
@@ -125,15 +117,12 @@ func update_town_visibility(update_info: Dictionary) -> void:
 		self.world_controller.update_world(world, update_info[world])
 		self.update_town({world*100+update_info[world]: true})
 
-func remove_alert(update_info: Dictionary) -> void:
-	for action in update_info:
-		var indexes = Actions.action_to_world_town[action]
-		EventBus.town_index_to_node[indexes[0]][indexes[1]].remove_action_highlight(action)
+func update_combat_values(update_info: Dictionary) -> void:
+	for _i in update_info:
+		EventBus.skill_container.update_combat()
 
-func new_story(update_info: Dictionary) -> void:
-	for action in update_info:
-		var indexes = Actions.action_to_world_town[action]
-		EventBus.town_index_to_node[indexes[0]][indexes[1]].add_story_highlight(action, update_info[action])
+func reset_action_highlights() -> void:
+	EventBus.world_controller.reset_action_highlights()
 
 func reset_view() -> void:
 	#Has to go through and reset all towns, stats/skill/boon containers, what worlds and towns are shown
@@ -142,3 +131,6 @@ func reset_view() -> void:
 	#towns/worlds visible (but keep on town 1)
 	#Loadout on action list
 	EventBus.world_controller.reset_world_view()
+	EventBus.skill_container.reset_skills()
+	EventBus.buff_container.reset_buffs()
+	EventBus.boon_container.reset_boons()

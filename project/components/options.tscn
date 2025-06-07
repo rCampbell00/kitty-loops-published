@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3 uid="uid://0gaj2vly7s1u"]
+
+[ext_resource type="Script" path="res://components/componentScripts/options.gd" id="1_rej4n"]
+
+[node name="Options" type="Label"]
+offset_right = 100.0
+offset_bottom = 33.0
+mouse_filter = 0
+theme_type_variation = &"LabelTitle"
+text = "Options"
+horizontal_alignment = 1
+script = ExtResource("1_rej4n")
+
+[node name="OptionPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_top = 29.0
+offset_right = 224.0
+offset_bottom = 117.0
+theme_type_variation = &"OptionPanel"
+
+[node name="M" type="MarginContainer" parent="OptionPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="V" type="VBoxContainer" parent="OptionPanel/M"]
+layout_mode = 2
+
+[node name="DiscordLink" type="LinkButton" parent="OptionPanel/M/V"]
+layout_mode = 2
+mouse_filter = 1
+text = "Discord Link"
+uri = "https://discord.gg/dnKA6Xd"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionPanel/M/V"]
+layout_mode = 2
+
+[node name="ThemeLabel" type="Label" parent="OptionPanel/M/V/HBoxContainer"]
+layout_mode = 2
+text = "Theme:"
+
+[node name="ThemeButton" type="OptionButton" parent="OptionPanel/M/V/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+flat = true
+alignment = 1
+
+[node name="ActionButton" type="CheckButton" parent="OptionPanel/M/V"]
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"exploreCheck"
+button_pressed = true
+text = "Highlight New Actions"
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="OptionPanel" to="." method="_on_option_panel_mouse_entered"]
+[connection signal="mouse_exited" from="OptionPanel" to="." method="_on_option_panel_mouse_exited"]
+[connection signal="toggled" from="OptionPanel/M/V/ActionButton" to="." method="_on_action_button_toggled"]

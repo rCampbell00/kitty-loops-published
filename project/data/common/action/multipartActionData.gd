@@ -53,6 +53,21 @@ func loop_completed(player: PlayerData) -> void:
 	#Do not auto call update loop cost as may have hit end of loops
 	player.get_multipart_data(self.action_id).loop_cleared(player)
 	self.add_rewards(player, loop_reward)
+	
+##CAUTION - Never have multiple sources of buffs with the same soul stone type as a cost, does not keep a rolling total
+# If changing this functionality, need to edit baseaction code too
+func check_buff_costs(player: PlayerData) -> bool:
+	if not super(player):
+		return false
+	if not ("buffs" in self.loop_reward):
+		return true
+	for buff in self.loop_reward["buffs"]:
+		var dict : Dictionary = self.loop_reward["buffs"][buff]
+		if "cost" in dict and (not player.get_buff_level(buff) >= dict["cap"]):
+			for type in dict["cost"]:
+				if not player.check_soul_stone(type, ceil(dict["cost"][type]*self.calculate_total_modifier(player, "soul_stone_"+type))):
+					return false
+	return true
 
 func can_start(player: PlayerData) -> bool:
 	return (not self.hit_max_loops(player)) and super(player)

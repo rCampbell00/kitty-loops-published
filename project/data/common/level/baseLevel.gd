@@ -48,6 +48,9 @@ func get_save_dict() -> Dictionary:
 	return {"level": self.level, "exp": self.experience}
 
 func load_save_dict(save_dict: Dictionary, player: PlayerData) -> void:
-	var level := int(save_dict["level"])
-	var exp := int(save_dict["exp"])
-	self.set_level(level, exp, player)
+	var load_level := 0
+	var load_exp := 0
+	if (("level" in save_dict) and typeof(save_dict["level"]) == TYPE_FLOAT) and (("exp" in save_dict) and typeof(save_dict["exp"]) == TYPE_FLOAT):
+		load_level = int(save_dict["level"])
+		load_exp = int(save_dict["exp"])
+	self.set_level(load_level, load_exp, player)

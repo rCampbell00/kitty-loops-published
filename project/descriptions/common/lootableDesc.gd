@@ -1,7 +1,6 @@
 extends BaseActionDesc
 class_name LootableDesc
 
-var lootable_finding_text := []
 var lootable_name := ""
 var lootable_story_conditions := []
 var lootable_story_strings := []

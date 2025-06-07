@@ -6,13 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://dds7ytl2mxmur" path="res://images/misc/visible-eye-hover.png" id="4_gnt7y"]
 
 [node name="Lootable" type="Control"]
-custom_minimum_size = Vector2(690, 26)
+custom_minimum_size = Vector2(690, 48)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -1230.0
-offset_bottom = -1054.0
+offset_bottom = -1032.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_kp6d7")
@@ -28,21 +28,23 @@ bbcode_enabled = true
 text = "<Name>"
 fit_content = true
 
-[node name="LootableCount" type="Label" parent="."]
+[node name="LootableCount" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 205.0
-offset_top = 1.0
-offset_right = 372.0
-offset_bottom = 27.0
+offset_top = 24.0
+offset_right = 192.0
+offset_bottom = 50.0
+mouse_filter = 2
 theme_type_variation = &"LabelExplore"
-text = "<Count>"
-horizontal_alignment = 2
+bbcode_enabled = true
+text = "Available: 100/100"
+fit_content = true
 
 [node name="CheckButton" type="CheckButton" parent="."]
 layout_mode = 0
 offset_left = 429.0
+offset_top = 20.0
 offset_right = 652.0
-offset_bottom = 26.0
+offset_bottom = 46.0
 mouse_filter = 1
 theme_type_variation = &"exploreCheck"
 theme_override_constants/h_separation = 5
@@ -62,6 +64,30 @@ texture_pressed = ExtResource("3_yb00q")
 texture_hover = ExtResource("4_gnt7y")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="LootableTotal" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 1.0
+offset_right = 653.0
+offset_bottom = 27.0
+mouse_filter = 2
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "[right]<Total>[/right]"
+fit_content = true
+
+[node name="LootableUnchecked" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 236.0
+offset_top = 24.0
+offset_right = 428.0
+offset_bottom = 50.0
+mouse_filter = 2
+theme_type_variation = &"LabelExplore"
+bbcode_enabled = true
+text = "Unchecked: 100"
+fit_content = true
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

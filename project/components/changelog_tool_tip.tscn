@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://dc52t238v88q3"]
+
+[ext_resource type="Script" path="res://components/componentScripts/changelog_tool_tip.gd" id="1_5nuib"]
+
+[node name="ChangelogToolTip" type="PanelContainer"]
+visible = false
+top_level = true
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5nuib")
+
+[node name="M" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="S" type="ScrollContainer" parent="M"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Text" type="Label" parent="M/S"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

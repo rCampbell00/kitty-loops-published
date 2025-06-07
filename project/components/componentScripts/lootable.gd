@@ -14,6 +14,9 @@ var action : LootableActionData
 var desc: LootableDesc
 var tool_tip := preload("res://components/tool_tip.tscn")
 
+func _ready() -> void:
+	$CheckButton.text = LanguageValues.lootable_check_new_text
+
 func update_name(new_explore_name: String) -> void:
 	self.explore_name = new_explore_name
 	$LootableName.text = Utility.bb_bold(self.explore_name)
@@ -32,7 +35,12 @@ func update_lootables(checked_good: int, new_total_good: int, new_total: int, ne
 	self.unexplored = new_total-new_total_checked
 	self.explored = new_total_checked
 	self.total = new_total
-	$LootableCount.text = "%s ⇐ %s ⇐ %s" % Utility.numbersToSuffix([self.available,self.total_good,self.unexplored])
+	var lootable_count_text := Utility.bb_bold(LanguageValues.lootable_resource_text[0])
+	lootable_count_text += ("%s/%s" % Utility.numbersToSuffix([self.available, self.total_good]))
+	$LootableCount.text = lootable_count_text
+	var lootable_unchecked_text := Utility.bb_bold(LanguageValues.lootable_resource_text[1])
+	lootable_unchecked_text += ("%s" % Utility.numberToSuffix(self.unexplored))
+	$LootableUnchecked.text = lootable_unchecked_text
 
 func update_visibility() -> void:
 	if hidden_val and (not self.toggle_mode):
@@ -55,9 +63,12 @@ func create_tool_tip() -> void:
 	if has_node("ToolTip"):
 		return
 	var tool_tip_instance = tool_tip.instantiate()
-	var tool_tip_text := ("%s ⇐ %s ⇐ %s\n"+Utility.bb_bold(LanguageValues.lootable_tooltip_text[0])
-						+" %d\n"+Utility.bb_bold(LanguageValues.lootable_tooltip_text[1])+" %d")
-	tool_tip_text = tool_tip_text % [self.desc.lootable_finding_text[0],self.desc.lootable_finding_text[1],self.desc.lootable_finding_text[2], self.total, self.explored]
+	var language_values := LanguageValues.lootable_tooltip_text
+	var tool_tip_text := "%s %d\n%s %d\n%s %d\n%s %d\n%s %d\n" % [
+		Utility.bb_bold(language_values[0]), self.available, Utility.bb_bold(language_values[1]), self.total_good,
+		Utility.bb_bold(language_values[2]), self.total, Utility.bb_bold(language_values[3]), self.explored,
+		Utility.bb_bold(language_values[4]), self.unexplored
+	]
 	tool_tip_instance.update_text(tool_tip_text)
 	add_child(tool_tip_instance)
 	if has_node("ToolTip"):

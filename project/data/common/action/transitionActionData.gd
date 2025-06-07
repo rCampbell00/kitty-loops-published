@@ -10,15 +10,14 @@ class_name TransitionActionData
 var town_changes := {}
 var town_change_condition := {}
 
-func swap_town(player: PlayerData, world: int, town: int) -> bool:
-	if (world not in self.town_change_condition) or self.check_given_requirements(player, self.town_change_condition[world][town]):
-		player.change_town(town, world)
+func swap_town(player: PlayerData, town: int) -> bool:
+	if (town not in self.town_change_condition) or self.check_given_requirements(player, self.town_change_condition[town]):
+		player.change_town(town)
 		return true
 	return false
 
 func finish(player: PlayerData) -> void:
 	super(player)
-	for world in self.town_changes:
-		for town in self.town_changes[world]:
-			if self.swap_town(player, world, town): 
-				return
+	for town in self.town_changes:
+		if self.swap_town(player, town): 
+			return

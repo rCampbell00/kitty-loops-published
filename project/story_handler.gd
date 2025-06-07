@@ -103,7 +103,7 @@ func update_action_completion_stories(action_id: String) -> void:
 			if not (id in newly_incomplete):
 				completion_stories_complete[action_id].append(id)
 		completion_stories_incomplete[action_id] = newly_incomplete
-		ViewHandler.request_update("new_story", {action_id: self.check_all_stories_complete(action_id)})
+		ViewHandler.request_update("update_story_highlight", {action_id: self.check_all_stories_complete(action_id)})
 		var world_town = Actions.action_to_world_town[action_id]
 		var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 		town_data.action_stories_not_read[action_id] = true
@@ -119,7 +119,7 @@ func update_action_fail_stories(action_id: String) -> void:
 			if not (id in newly_incomplete):
 				fail_stories_complete[action_id].append(id)
 		fail_stories_incomplete[action_id] = newly_incomplete
-		ViewHandler.request_update("new_story", {action_id: self.check_all_stories_complete(action_id)})
+		ViewHandler.request_update("update_story_highlight", {action_id: self.check_all_stories_complete(action_id)})
 		var world_town = Actions.action_to_world_town[action_id]
 		var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 		town_data.action_stories_not_read[action_id] = true
@@ -180,7 +180,7 @@ func update_skill_stories(skill_id: String) -> void:
 			var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 			town_data.action_stories_not_read[action_id] = true
 			update_dict[action_id] = self.check_all_stories_complete(action_id)
-	ViewHandler.request_update("new_story", update_dict)
+	ViewHandler.request_update("update_story_highlight", update_dict)
 
 func update_buff_stories(buff_id: String) -> void:
 	var actions_with_buff_flag : Array = EventBus.buff_subscriptions[buff_id]
@@ -198,7 +198,7 @@ func update_buff_stories(buff_id: String) -> void:
 			var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 			town_data.action_stories_not_read[action_id] = true
 			update_dict[action_id] = self.check_all_stories_complete(action_id)
-	ViewHandler.request_update("new_story", update_dict)
+	ViewHandler.request_update("update_story_highlight", update_dict)
 
 func update_boon_stories(boon_id: String) -> void:
 	var actions_with_boon_flag : Array = EventBus.boon_subscriptions[boon_id]
@@ -216,7 +216,7 @@ func update_boon_stories(boon_id: String) -> void:
 			var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 			town_data.action_stories_not_read[action_id] = true
 			update_dict[action_id] = self.check_all_stories_complete(action_id)
-	ViewHandler.request_update("new_story", update_dict)
+	ViewHandler.request_update("update_story_highlight", update_dict)
 
 func update_talent_stories(talent_id: String) -> void:
 	var actions_with_talent_flag : Array = EventBus.talent_subscriptions[talent_id]
@@ -234,7 +234,7 @@ func update_talent_stories(talent_id: String) -> void:
 			var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 			town_data.action_stories_not_read[action_id] = true
 			update_dict[action_id] =  self.check_all_stories_complete(action_id)
-	ViewHandler.request_update("new_story", update_dict)
+	ViewHandler.request_update("update_story_highlight", update_dict)
 
 func handle_explore_stories(story_conditions: Array, incomplete_ids: Array) -> Array:
 	var still_incomplete := []
@@ -259,7 +259,7 @@ func update_explore_action_stories(explore_id: String) -> void:
 			if not (id in newly_incomplete):
 				completion_stories_complete[explore_id].append(id)
 		completion_stories_incomplete[explore_id] = newly_incomplete
-		ViewHandler.request_update("new_story", {explore_id: self.check_all_stories_complete(explore_id)})
+		ViewHandler.request_update("update_story_highlight", {explore_id: self.check_all_stories_complete(explore_id)})
 		var world_town = Actions.action_to_world_town[explore_id]
 		var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 		town_data.action_stories_not_read[explore_id] = true
@@ -312,7 +312,7 @@ func update_lootable_action_stories(action_id: String) -> void:
 			if not (id in newly_incomplete):
 				lootable_stories_complete[action_id].append(id)
 		lootable_stories_incomplete[action_id] = newly_incomplete
-		ViewHandler.request_update("new_story", {action_id: self.check_all_stories_complete(action_id)})
+		ViewHandler.request_update("update_story_highlight", {action_id: self.check_all_stories_complete(action_id)})
 		var world_town = Actions.action_to_world_town[action_id]
 		var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 		town_data.action_stories_not_read[action_id] = true
@@ -328,7 +328,7 @@ func update_multipart_action_stories(action_id: String) -> void:
 			if not (id in newly_incomplete):
 				multipart_stories_complete[action_id].append(id)
 		multipart_stories_incomplete[action_id] = newly_incomplete
-		ViewHandler.request_update("new_story", {action_id: self.check_all_stories_complete(action_id)})
+		ViewHandler.request_update("update_story_highlight", {action_id: self.check_all_stories_complete(action_id)})
 		var world_town = Actions.action_to_world_town[action_id]
 		var town_data : BaseTownData = EventBus.town_index_to_node[world_town[0]][world_town[1]].town_data
 		town_data.action_stories_not_read[action_id] = true
@@ -385,6 +385,14 @@ func get_save_dict() -> Dictionary:
 	return save_dict
 
 func handle_load_complete_fail_stories(save_dict: Dictionary) -> void:
+	if (not "completion_stories" in save_dict) or typeof(save_dict["completion_stories"]) != TYPE_DICTIONARY:
+		save_dict["completion_stories"] = {}
+	if (not "fail_stories" in save_dict) or typeof(save_dict["fail_stories"]) != TYPE_DICTIONARY:
+		save_dict["fail_stories"] = {}
+	if (not "lootable_stories" in save_dict) or typeof(save_dict["lootable_stories"]) != TYPE_DICTIONARY:
+		save_dict["lootable_stories"] = {}
+	if (not "multipart_stories" in save_dict) or typeof(save_dict["multipart_stories"]) != TYPE_DICTIONARY:
+		save_dict["multipart_stories"] = {}
 	for action in Actions.action_descs:
 		var action_des : BaseActionDesc = Actions.action_descs[action]
 		self.completion_stories_complete[action] = []
@@ -397,13 +405,15 @@ func handle_load_complete_fail_stories(save_dict: Dictionary) -> void:
 			self.fail_stories_incomplete[action] = []
 			#Have to do this as the json stores it as a float
 			for id in save_dict["completion_stories"][action]:
-				self.completion_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.completion_stories_complete[action].append(int(id))
 			#Have to go through each id from the conditions, in case there are more than can be told from the save data
 			for id in range(len(action_des.completion_story_conditions)):
 				if not (id in self.completion_stories_complete[action]):
 					self.completion_stories_incomplete[action].append(id)
 			for id in save_dict["fail_stories"][action]:
-				self.fail_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.fail_stories_complete[action].append(int(id))
 			for id in range(len(action_des.fail_story_conditions)):
 				if not (id in self.fail_stories_complete[action]):
 					self.fail_stories_incomplete[action].append(id)
@@ -414,7 +424,8 @@ func handle_load_complete_fail_stories(save_dict: Dictionary) -> void:
 			else:
 				self.lootable_stories_incomplete[action] = []
 				for id in save_dict["lootable_stories"][action]:
-					self.lootable_stories_complete[action].append(int(id))
+					if typeof(id) == TYPE_FLOAT:
+						self.lootable_stories_complete[action].append(int(id))
 				for id in range(len(action_des.lootable_story_conditions)):
 					if not (id in self.lootable_stories_complete[action]):
 						self.lootable_stories_incomplete[action].append(id)
@@ -425,12 +436,15 @@ func handle_load_complete_fail_stories(save_dict: Dictionary) -> void:
 			else:
 				self.multipart_stories_incomplete[action] = []
 				for id in save_dict["multipart_stories"][action]:
-					self.multipart_stories_complete[action].append(int(id))
+					if typeof(id) == TYPE_FLOAT:
+						self.multipart_stories_complete[action].append(int(id))
 				for id in range(len(action_des.multipart_story_conditions)):
 					if not (id in self.multipart_stories_complete[action]):
 						self.multipart_stories_incomplete[action].append(id)
 
 func handle_load_skill_stories(save_dict: Dictionary) -> void:
+	if (not "skill_stories" in save_dict) or typeof(save_dict["skill_stories"]) != TYPE_DICTIONARY:
+		save_dict["skill_stories"] = {}
 	for action in self.skill_stories_complete.keys():
 		var action_des : BaseActionDesc = Actions.action_descs[action]
 		self.skill_stories_complete[action] = []
@@ -439,12 +453,15 @@ func handle_load_skill_stories(save_dict: Dictionary) -> void:
 		else:
 			self.skill_stories_incomplete[action] = []
 			for id in save_dict["skill_stories"][action]:
-				self.skill_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.skill_stories_complete[action].append(int(id))
 			for id in range(len(action_des.skill_story_conditions)):
 				if not (id in self.skill_stories_complete[action]):
 					self.skill_stories_incomplete[action].append(id)
 
 func handle_load_buff_stories(save_dict: Dictionary) -> void:
+	if (not "buff_stories" in save_dict) or typeof(save_dict["buff_stories"]) != TYPE_DICTIONARY:
+		save_dict["buff_stories"] = {}
 	for action in self.buff_stories_complete.keys():
 		var action_des : BaseActionDesc = Actions.action_descs[action]
 		self.buff_stories_complete[action] = []
@@ -453,12 +470,15 @@ func handle_load_buff_stories(save_dict: Dictionary) -> void:
 		else:
 			self.buff_stories_incomplete[action] = []
 			for id in save_dict["buff_stories"][action]:
-				self.buff_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.buff_stories_complete[action].append(int(id))
 			for id in range(len(action_des.buff_story_conditions)):
 				if not (id in self.buff_stories_complete[action]):
 					self.buff_stories_incomplete[action].append(id)
 
 func handle_load_boon_stories(save_dict: Dictionary) -> void:
+	if (not "boon_stories" in save_dict) or typeof(save_dict["boon_stories"]) != TYPE_DICTIONARY:
+		save_dict["boon_stories"] = {}
 	for action in self.boon_stories_complete.keys():
 		var action_des : BaseActionDesc = Actions.action_descs[action]
 		self.boon_stories_complete[action] = []
@@ -467,12 +487,15 @@ func handle_load_boon_stories(save_dict: Dictionary) -> void:
 		else:
 			self.boon_stories_incomplete[action] = []
 			for id in save_dict["boon_stories"][action]:
-				self.boon_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.boon_stories_complete[action].append(int(id))
 			for id in range(len(action_des.boon_story_conditions)):
 				if not (id in self.boon_stories_complete[action]):
 					self.boon_stories_incomplete[action].append(id)
 
 func handle_load_talent_stories(save_dict: Dictionary) -> void:
+	if (not "talent_stories" in save_dict) or typeof(save_dict["talent_stories"]) != TYPE_DICTIONARY:
+		save_dict["talent_stories"] = {}
 	for action in self.talent_stories_complete.keys():
 		var action_des : BaseActionDesc = Actions.action_descs[action]
 		self.talent_stories_complete[action] = []
@@ -481,7 +504,8 @@ func handle_load_talent_stories(save_dict: Dictionary) -> void:
 		else:
 			self.talent_stories_incomplete[action] = []
 			for id in save_dict["talent_stories"][action]:
-				self.talent_stories_complete[action].append(int(id))
+				if typeof(id) == TYPE_FLOAT:
+					self.talent_stories_complete[action].append(int(id))
 			for id in range(len(action_des.talent_story_conditions)):
 				if not (id in self.talent_stories_complete[action]):
 					self.talent_stories_incomplete[action].append(id)
@@ -490,15 +514,7 @@ func handle_load_talent_stories(save_dict: Dictionary) -> void:
 #Need to find a better way to store which stories were complete to simplify these
 #without adding to the cost during run of the game
 func load_save_dict(save_dict: Dictionary) -> void:
-	if (typeof(save_dict["completion_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["fail_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["lootable_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["multipart_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["skill_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["buff_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["boon_stories"]) != TYPE_DICTIONARY or 
-		typeof(save_dict["talent_stories"]) != TYPE_DICTIONARY):
-		return
+
 	self.handle_load_complete_fail_stories(save_dict)
 	self.handle_load_skill_stories(save_dict)
 	self.handle_load_buff_stories(save_dict)

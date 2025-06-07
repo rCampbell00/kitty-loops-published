@@ -15,8 +15,8 @@ func reset(player: PlayerData) -> void:
 	self.quality_progress_needed = self.action.calc_quality_cost(self.quality_level)
 
 func calculate_boost(player: PlayerData) -> void:
-	super(player)
 	self.quality_boost = self.action.calc_quality_boost(player, self.quality_level)
+	super(player)
 
 func add_quality_progress(player: PlayerData, amount: int) -> void:
 	self.quality_progress += amount

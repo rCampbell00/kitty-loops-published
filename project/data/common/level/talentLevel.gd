@@ -17,8 +17,8 @@ func set_stat(stat_name: String) -> void:
 	self.stat = stat_name
 
 func calc_boost(_player: PlayerData) -> float:
-	self.boost = 1.0
+	self.boost = 1.0 + (float(self.level)/10)
 	return self.boost
 
-func reset(player: PlayerData) -> void:
+func reset(_player: PlayerData) -> void:
 	pass #Nothing about talent should reset

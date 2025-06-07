@@ -88,7 +88,6 @@ func _open_actions() -> void:
 
 
 func _open_stories() -> void:
-	EventBus.load_game()
 	$Towns.get_node(str(current_town)).swap_action_functionality(false)
 	$Headers/TownSubHeader/LeftArrow.show()
 	$Headers/TownSubHeader/RightArrow.hide()
@@ -110,3 +109,7 @@ func reset_world_view() -> void:
 		town.reset_town_view()
 	self.reset_town_options()
 	self._open_actions()
+	
+func reset_action_highlights() -> void:
+	for town in $Towns.get_children():
+		town.reset_action_highlights()

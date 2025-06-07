@@ -9,8 +9,12 @@ var base_flavour_text := ""
 # The base text for this to include with a series of %s
 # Array values to put in each %s in turn
 # Array of conditions to meet to fill with the given value, "" if it does not
-# Values can be: name of a skill/buff/boon, world_town number
-#example: ["(Magic Skill) * (1 + Main Stat/100)%s", [" * (1 + Restoration)"], ["restoration"]]
+# Types can be: "skill", "buff", "boon", "action_visible", "town_unlocked"
+# skill is just "type": skill, "level": x, "skill": restoration
+# Buff and boon are the same
+# "town_unlocked" is "world": int, "town": int
+# "action_visible" "action": action_id
+#example: ["(Magic Skill) * (1 + Main Stat/100)%s", [" * (1 + Restoration)"], [{"type": "skill", "skill": "restoration", "level": 1}]]
 var flavour_dynamic_text := []
 
 # Dictionary of values for this part (and fills in result in this order)
@@ -69,6 +73,14 @@ func calculate_effects_text() -> Array:
 			skill_caps.append(floor(capped_skills[skill]["cap"]*cap_mult))
 		base_string = base_string % skill_caps
 		effect_arr.append(base_string)
+	if "resource_requirements" in self.base_effects_text:
+		var base_string : String = self.base_effects_text["resource_requirements"]["base"]
+		var resources_required := []
+		var action_resources : Dictionary = self.action_data.required_items["resources"]
+		for res in self.base_effects_text["resource_requirements"]["res_order"]:
+			resources_required.append(floor(action_resources[res]*self.action_data.calculate_non_resource_multiplier(MainPlayer, res)))
+		base_string = base_string % resources_required
+		effect_arr.append(base_string)
 	if "limit" in self.base_effects_text:
 		effect_arr.append(self.base_effects_text["limit"] % self.action_data.get_action_limit(MainPlayer))
 	return effect_arr
@@ -80,17 +92,18 @@ func compose_dynamic_text(info_array: Array) -> String:
 	var dynamic_values := []
 	for i in range(len(dynamic_text_array)):
 		var add_value := false
-		var condition : String = text_conditions[i]
-		if condition in Actions.skill_list:
-			add_value = MainPlayer.check_skill_level(condition, 1)
-		elif condition in Actions.buff_list:
-			add_value = MainPlayer.check_buff_level(condition, 1)
-		elif condition in Actions.boon_list:
-			add_value = MainPlayer.check_boon_level(condition, 1)
-		else:
-			var world_town := condition.split("_")
-			if len(world_town) == 2:
-				add_value = MainPlayer.check_town_unlocked(world_town[0].to_int(), world_town[1].to_int())
+		var condition : Dictionary = text_conditions[i]
+		match condition["type"]:
+			"skill":
+				add_value = MainPlayer.check_skill_level(condition["skill"], condition["level"])
+			"buff":
+				add_value = MainPlayer.check_buff_level(condition["buff"], condition["level"])
+			"boon":
+				add_value = MainPlayer.check_skill_level(condition["boon"], condition["level"])
+			"town_unlocked":
+				add_value = MainPlayer.check_town_unlocked(condition["world"], condition["town"])
+			"action_visible":
+				add_value = Actions.all_actions[condition["action"]].get_visible(MainPlayer)
 		var dynamic_value : String = dynamic_text_array[i] if add_value else ""
 		dynamic_values.append(dynamic_value)
 	final_text = final_text % dynamic_values

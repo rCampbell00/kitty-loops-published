@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://basmynf8sj11d"]
+
+[ext_resource type="Script" path="res://components/componentScripts/stats_container.gd" id="1_jrygy"]
+[ext_resource type="PackedScene" uid="uid://booqprtbi4psd" path="res://components/stat_box.tscn" id="2_jrvin"]
+
+[node name="StatsContainer" type="Control"]
+custom_minimum_size = Vector2(400, 240)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1520.0
+offset_bottom = -840.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jrygy")
+
+[node name="StatTitlePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 40.0
+theme_type_variation = &"ComponentPanel"
+
+[node name="StatTitle" type="Label" parent="StatTitlePanel"]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 40.0
+theme_type_variation = &"LabelTitle"
+text = "<Stats>"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillsContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 400.0
+offset_bottom = 240.0
+theme_type_variation = &"ComponentPanelBottom"
+columns = 3
+
+[node name="DexStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Dex"
+
+[node name="StrStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Str"
+
+[node name="ConStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Con"
+
+[node name="SpdStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Spd"
+
+[node name="PerStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Per"
+
+[node name="ChaStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Cha"
+
+[node name="IntStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Int"
+
+[node name="SoulStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Soul"
+
+[node name="LuckStat" parent="SkillsContainer" instance=ExtResource("2_jrvin")]
+layout_mode = 2
+stat_type = "Luck"
+
+[connection signal="focus_entered" from="StatTitlePanel" to="." method="_on_stat_title_panel_focus_entered"]
+[connection signal="focus_exited" from="StatTitlePanel" to="." method="_on_stat_title_panel_focus_exited"]
+[connection signal="mouse_entered" from="StatTitlePanel" to="." method="_on_stat_title_panel_mouse_entered"]
+[connection signal="mouse_exited" from="StatTitlePanel" to="." method="_on_stat_title_panel_mouse_exited"]

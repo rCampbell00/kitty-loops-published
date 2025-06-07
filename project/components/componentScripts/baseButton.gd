@@ -162,8 +162,13 @@ func update_status(hidden_status: bool, action_complete: bool, story_unread: boo
 	$Action.modulate.a = 0.5 if self.hidden_val else 1.0
 	$Action/Eye.set_pressed_no_signal(self.hidden_val)
 	self.set_story_highlight(story_unread, all_stories)
+	self.reset_action_highlight(action_complete)
+
+func reset_action_highlight(action_complete: bool):
+	if not Options.show_action_highlight:
+		action_complete = true
 	self.set_action_complete(action_complete)
-	
+
 
 func _on_eye_toggled(toggled_on: bool) -> void:
 	self.hidden_val = toggled_on

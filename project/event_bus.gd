@@ -14,6 +14,10 @@ var celestial_towns := {}
 var shadow_towns := {}
 var town_index_to_node = [self.terra_towns, self.celestial_towns, self.shadow_towns]
 var world_controller : Control
+var main_gui : Control
+var skill_container : Control
+var buff_container : Control
+var boon_container : Control
 var story_handler := preload("res://story_handler.gd").new()
 var save_handler := preload("res://save.gd").new()
 
@@ -34,8 +38,12 @@ func _ready() -> void:
 func add_town(town: BaseTown) -> void:
 	self.town_index_to_node[town.world_index][town.town_index] = town
 
-func add_world_controller(controller: Control) -> void:
-	self.world_controller = controller
+func setup_connections(main_node: Control) -> void:
+	self.main_gui = main_node
+	self.world_controller = main_gui.get_node("World_Controller")
+	self.skill_container = main_gui.get_node("Skills")
+	self.buff_container = main_gui.get_node("Buffs")
+	self.boon_container = main_gui.get_node("Boons")
 
 func setup_action_subscriptions() -> void:
 	for action in Actions.all_actions:
@@ -82,7 +90,7 @@ func action_completed(action_id: String, player: PlayerData) -> void:
 	var prev_complete_state : bool = town.actions_completed[action_id]
 	if not prev_complete_state:
 		town.actions_completed[action_id] = true
-		ViewHandler.request_update("remove_alert", {action_id: true})
+		ViewHandler.request_update("update_action_highlight", {action_id: true})
 	self.story_handler.update_action_completion_stories(action_id)
 	pass #TODO rest of the action complete code for tutorial
 
@@ -136,6 +144,9 @@ func lootable_checked(lootable_id: String, player: PlayerData) -> void:
 	self.story_handler.update_lootable_action_stories(lootable_id)
 	ViewHandler.request_update("town_lootable_collected", {lootable_id: true})
 
+func change_bus_cap(buff_id: String, cap: int) -> void:
+	MainPlayer.chosen_buff_caps[buff_id] = cap
+
 func get_story_save_dict() -> Dictionary:
 	return self.story_handler.get_save_dict()
 
@@ -145,5 +156,11 @@ func load_story_save_dict(save_dict: Dictionary) -> void:
 func save() -> void:
 	save_handler.save_game()
 
-func load_game() -> void:
-	save_handler.load_game()
+func load_game(path: String = "") -> void:
+	save_handler.load_game("", path, false)
+
+func get_save_string() -> String:
+	return save_handler.export_save_string()
+
+func attempt_decode_save(encoded_save: String) -> void:
+	save_handler.import_save_from_string(encoded_save)

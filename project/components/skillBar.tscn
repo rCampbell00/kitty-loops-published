@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://bowfkgilnb1j1"]
+[gd_scene load_steps=2 format=3 uid="uid://bowfkgilnb1j1"]
+
+[ext_resource type="Script" path="res://components/componentScripts/skill_bar.gd" id="1_m6fx1"]
 
 [node name="SkillBar" type="Control"]
+visible = false
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 3
 anchors_preset = 15
@@ -10,20 +13,21 @@ offset_right = -1740.0
 offset_bottom = -1056.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_m6fx1")
 
 [node name="SkillLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 180.0
 offset_bottom = 19.0
-text = "Pyromancy"
+text = "<Skill>"
 
-[node name="SkillValue" type="Label" parent="."]
+[node name="SkillLevel" type="Label" parent="."]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 180.0
 offset_bottom = 19.0
-text = "100k"
+text = "<level>"
 horizontal_alignment = 2
 
 [node name="SkillProgress" type="ProgressBar" parent="."]
@@ -31,4 +35,10 @@ layout_mode = 0
 offset_top = 18.0
 offset_right = 180.0
 offset_bottom = 24.0
+mouse_filter = 2
 show_percentage = false
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

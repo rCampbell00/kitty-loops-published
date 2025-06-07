@@ -29,6 +29,8 @@ func reset(player: PlayerData) -> void:
 func calculate_boost(player: PlayerData) -> void:
 	if self.has_boost:
 		self.boost = action.get_boost_multiplier(self.segments_cleared, player)
+	if self.action.action_id in Actions.combat_multipart_update_flags:
+		player.calc_combat_stats()
 
 ## Update progress and costs called by loop code - used for visual code and memorising for later action calls
 func update_progress(new_progress: Array[int]) -> void:

@@ -46,9 +46,11 @@ var add_functions := {
 # Bonus image
 var bonus_action_name := ""
 # List of resources needed to start the action that are not spent - split into different catgories
-## "skills": {}, "resources": {}, "buffs": {}, "boons": {}, "town_progress": {}, "extra_conditions": []
+## "skills": {}, "resources": {}, "buffs": {}, "boons": {}, "town_progress": {}, "extra_conditions": [], "town_multipart" :{}
 ## Skills, resources, buffs, boons are form of {"name":count}
 ## town_progress is form {"progress_name": level_needed}
+## town_variable is form {town_index: {"idx": int, "count": int}
+## town_multipart is form {"multipart_id": loops_needed}
 ## Extra conditions is an array of function pointers that all take in player as a singular argument and return a bool
 var required_items := {}
 var visible_req := {}
@@ -90,7 +92,8 @@ var check_functions := {
 	"resources": self.check_resources,
 	"extra_conditions": self.check_extra_condition,
 	"town_progress": self.check_town_progress,
-	"town_variable": self.check_town_variable
+	"town_variable": self.check_town_variable,
+	"multipart_loops": self.check_multipart_loops
 }
 ### FLAGS
 var flags : Array[String] = []
@@ -134,10 +137,16 @@ func check_town_variable(player: PlayerData, dict: Dictionary) -> bool:
 			if player.get_town_value(variable["idx"], town) < variable["count"]:
 				return false
 	return true
-	
+
+func check_multipart_loops(player: PlayerData, dict: Dictionary) -> bool:
+	for multipart_id in dict:
+		if player.get_multipart_loop_cleared(multipart_id) < dict[multipart_id]:
+			return false
+	return true
+
 func check_resources(player: PlayerData, dict: Dictionary) -> bool:
 	for resource in dict:
-		if not player.check_resource(resource, floor(dict[resource]*self.calculate_total_modifier(player, resource))):
+		if not player.check_resource(resource, floori(dict[resource]*self.calculate_total_modifier(player, resource))):
 			return false
 	return true
 	
@@ -230,14 +239,16 @@ func get_visible(player: PlayerData) -> bool:
 func get_unlocked(player: PlayerData) -> bool:
 	return check_given_requirements(player, self.unlocked_req)
 
+##CAUTION - Never have multiple sources of buffs with the same soul stone type as a cost, does not keep a rolling total
+# If changing this functionality, need to edit multipart code too
 func check_buff_costs(player: PlayerData) -> bool:
 	if not ("buffs" in self.completion_resources):
 		return true
 	for buff in self.completion_resources["buffs"]:
 		var dict : Dictionary = self.completion_resources["buffs"][buff]
-		if "cost" in dict:
+		if "cost" in dict and (not player.get_buff_level(buff) >= dict["cap"]): #Ignore cost if capped
 			for type in dict["cost"]:
-				if not player.check_soul_stone(type, ceil(dict["cost"][type]*self.calculate_total_modifier(player, "soul_stone_"+type))):
+				if not player.check_soul_stone(type, ceili(dict["cost"][type]*self.calculate_total_modifier(player, "soul_stone_"+type))):
 					return false
 	return true
 
@@ -247,6 +258,7 @@ func check_town(player: PlayerData):
 # Cannot make use of the limited flag here as it needs info from the action list
 func can_start(player: PlayerData) -> bool:
 	var result := (self.check_town(player)
+				and check_given_requirements(player, self.unlocked_req)
 				and check_given_requirements(player, self.required_items) 
 				and check_resources(player, self.action_cost) 
 				and check_buff_costs(player))
@@ -264,44 +276,44 @@ func action_fail_check(_player: PlayerData) -> String:
 # Simple function to allow overloading if needed
 func remove_resources(player: PlayerData, resources: Dictionary) -> void:
 	for res in resources:
-		player.remove_resource(res, ceil(resources[res]*self.calculate_total_modifier(player, res)))
+		player.remove_resource(res, ceili(resources[res]*self.calculate_total_modifier(player, res)))
 
 # Function to add resources at the end of action
 func add_skills(player: PlayerData, skills: Dictionary) -> void:
 	for skill in skills:
-		player.add_skill(skill, floor(skills[skill]*self.calculate_total_modifier(player, skill)))
+		player.add_skill(skill, floori(skills[skill]*self.calculate_total_modifier(player, skill)))
 
 func add_skills_capped(player: PlayerData, skills: Dictionary) -> void:
 	for skill in skills:
 		var cap_mult := 1.0
 		if "cap_func" in skills[skill]:
 			cap_mult = CustomActionInterpreter.handle_function(skills[skill]["cap_func"], self.action_id, player)
-		if player.get_skill_level(skill) < floor(skills[skill]["cap"]*cap_mult):
-			player.add_skill(skill, floor(skills[skill]["exp"]*self.calculate_total_modifier(player, skill)))
+		if player.get_skill_level(skill) < floori(skills[skill]["cap"]*cap_mult):
+			player.add_skill(skill, floori(skills[skill]["exp"]*self.calculate_total_modifier(player, skill)))
 		
 func add_town_progress(player: PlayerData, town_progress: Dictionary) -> void:
 	for prog in town_progress:
-		var total_progress:int = floor(town_progress[prog]*self.calculate_total_modifier(player, prog))
+		var total_progress:int = floori(town_progress[prog]*self.calculate_total_modifier(player, prog))
 		player.add_town_progress(prog, total_progress)
 		
 func add_resources(player: PlayerData, resources: Dictionary) -> void:
 	for res in resources:
-		player.add_resource(res, floor(resources[res]*self.calculate_total_modifier(player, res)))
+		player.add_resource(res, floori(resources[res]*self.calculate_total_modifier(player, res)))
 
 ## Buffs are "name": {"cap": max_level, "cap_func": custom cap (up to max, if not -1), "cost": {"soul_stone":...}}
 func add_buffs(player: PlayerData, buffs: Dictionary) -> void:
 	for buff in buffs:
 		var custom_cap : int = buffs[buff]["cap"]
 		if "custom_cap" in buffs[buff]:
-			var potential_cap : int = floor(CustomActionInterpreter.handle_function(buffs[buff]["custom_cap"], self.action_id, player))
-			custom_cap = min(custom_cap, potential_cap) if custom_cap != -1 else potential_cap
-		if (player.get_buff_level(buff) < custom_cap) or custom_cap == -1:
+			var potential_cap : int = floori(CustomActionInterpreter.handle_function(buffs[buff]["custom_cap"], self.action_id, player))
+			custom_cap = min(custom_cap, potential_cap)
+		if player.get_buff_level(buff) < min(custom_cap, player.chosen_buff_caps[buff]):
 			self.remove_soul_stones(player, buffs[buff]["cost"])
 			player.add_buff(buff, 1)
 
 func remove_soul_stones(player: PlayerData, ssDict: Dictionary) -> void:
 	for type in ssDict:
-		player.remove_soul_stone(type, ceil(ssDict[type]*self.calculate_total_modifier(player, "soul_stone_"+type)))
+		player.remove_soul_stone(type, ceili(ssDict[type]*self.calculate_total_modifier(player, "soul_stone_"+type)))
 
 func add_boons(player: PlayerData, boons: Dictionary) -> void:
 	for boon in boons:
@@ -309,7 +321,7 @@ func add_boons(player: PlayerData, boons: Dictionary) -> void:
 			player.add_boon(boon, 1)
 
 func add_team_member(player: PlayerData, team_member_function: Array) -> void:
-	var value : int = floor(CustomActionInterpreter.handle_function(team_member_function, self.action_id, player))
+	var value : int = floori(CustomActionInterpreter.handle_function(team_member_function, self.action_id, player))
 	player.add_team_member(self.action_id, value)
 
 func remove_team_member(player: PlayerData, team_member_id: String) -> void:
@@ -317,7 +329,7 @@ func remove_team_member(player: PlayerData, team_member_id: String) -> void:
 
 func add_town_variable(player: PlayerData, town_variables: Dictionary) -> void:
 	for town_variable in town_variables:
-		player.add_town_value(town_variable, floor(town_variables[town_variable]*self.calculate_total_modifier(player,"town_variable")), self.town_num)
+		player.add_town_value(town_variable, floori(town_variables[town_variable]*self.calculate_total_modifier(player,"town_variable")), self.town_num)
 
 func change_sub_town(player: PlayerData, sub_town_number: int) -> void:
 	player.change_sub_town(sub_town_number)
@@ -334,7 +346,7 @@ func add_global_multoplier(player: PlayerData, global_multiplier: Dictionary) ->
 
 func add_soul_stones(player: PlayerData, soul_stone_dict: Dictionary) -> void:
 	for type in soul_stone_dict:
-		player.add_soul_stone(type, floor(soul_stone_dict[type]*self.calculate_total_modifier(player, "soul_stone_"+type)))
+		player.add_soul_stone(type, floori(soul_stone_dict[type]*self.calculate_total_modifier(player, "soul_stone_"+type)))
 
 func add_rewards(player: PlayerData, rewards: Dictionary) -> void:
 	for reward in rewards:
@@ -342,7 +354,7 @@ func add_rewards(player: PlayerData, rewards: Dictionary) -> void:
 
 func add_custom_resources(player: PlayerData, custom_rewards: Dictionary) -> void:
 	for reward in custom_rewards:
-		var count : int = floor(CustomActionInterpreter.handle_function(custom_rewards[reward], self.action_id, player))
+		var count : int = floori(CustomActionInterpreter.handle_function(custom_rewards[reward], self.action_id, player))
 		if custom_rewards[reward]["resource"]:
 			player.add_resource(reward, count)
 		else:
@@ -357,7 +369,7 @@ func finish(player: PlayerData) -> void:
 
 #Mana cost rather than mana as mana can be added as a separate resource
 func get_mana_cost(player: PlayerData) -> int:
-	return ceil(self.base_mana_cost*self.calculate_total_modifier(player, "mana_cost"))
+	return ceili(self.base_mana_cost*self.calculate_total_modifier(player, "mana_cost"))
 
 func get_experience_mult(player: PlayerData) -> float:
 	return self.experience_mult*self.calculate_total_modifier(player, "experience_mult")
@@ -367,11 +379,11 @@ func get_stat_distribution() -> Dictionary:
 
 #Override for actions that require it
 func get_action_limit(player: PlayerData) -> int:
-	return floor(self.action_limit*self.calculate_total_modifier(player, "limit"))
+	return floori(self.action_limit*self.calculate_total_modifier(player, "limit"))
 
 var level_function : Array[int] = [5,1]
 func calc_action_level_cost(player: PlayerData, level: int) -> int:
-	return floor(CustomActionInterpreter.handle_function(level_function, self.action_id, player, level))
+	return floori(CustomActionInterpreter.handle_function(level_function, self.action_id, player, level))
 
 #Array of Dictionaries: {"function", "ids"}
 var boost_functions := []

@@ -259,35 +259,43 @@ func get_save_dict() -> Dictionary:
 
 func load_save_dict(save_dict: Dictionary) -> void:
 	self.clear_data()
-	if typeof(save_dict["explore_progress"]) == TYPE_DICTIONARY:
-		for explore in self.explore_progress:
-			if explore in save_dict["explore_progress"]:
-				self.explore_progress[explore].load_save_dict(save_dict["explore_progress"][explore], self.connected_player)
-	if typeof(save_dict["lootables"]) == TYPE_DICTIONARY:
-		for lootable in self.lootable_values:
-			if lootable in save_dict["lootables"]:
-				var data : Dictionary = self.lootable_values[lootable]
+	if (not "explore_progress" in save_dict) or typeof(save_dict["explore_progress"]) != TYPE_DICTIONARY:
+		save_dict["explore_progess"] = {}
+	for explore in self.explore_progress:
+		if explore in save_dict["explore_progress"]:
+			self.explore_progress[explore].load_save_dict(save_dict["explore_progress"][explore], self.connected_player)
+	if (not "lootables" in save_dict) or typeof(save_dict["lootables"]) != TYPE_DICTIONARY:
+		save_dict["lootables"] = {}
+	for lootable in self.lootable_values:
+		if lootable in save_dict["lootables"]:
+			var data : Dictionary = self.lootable_values[lootable]
+			var new_data : Dictionary = save_dict["lootables"][lootable]
+			if "check_new" in new_data and typeof(new_data["check_new"]) == TYPE_BOOL:
 				data["check_new"] = save_dict["lootables"][lootable]["check_new"]
+			if ("good" in new_data and typeof(new_data["good"]) == TYPE_FLOAT) and ("total" in new_data and typeof(new_data["total"]) == TYPE_FLOAT) and ("checked" in new_data and typeof(new_data["checked"]) == TYPE_FLOAT):
 				data["good"] = int(save_dict["lootables"][lootable]["good"])
 				data["total"] = int(save_dict["lootables"][lootable]["total"])
 				data["checked"] = int(save_dict["lootables"][lootable]["checked"])
-	if typeof(save_dict["actions_completed"]) == TYPE_DICTIONARY:
-		for action_id in self.actions_completed:
-			if action_id in save_dict["actions_completed"]:
-				self.actions_completed[action_id] = save_dict["actions_completed"][action_id]
-	if typeof(save_dict["stories_unread"]) == TYPE_DICTIONARY:
-		for action_id in self.action_stories_not_read:
-			if action_id in save_dict["stories_unread"]:
-				self.action_stories_not_read[action_id] = save_dict["stories_unread"][action_id]
-	if typeof(save_dict["explore_hidden"]) == TYPE_DICTIONARY:
-		for explore_id in self.explorations_hidden:
-			if explore_id in save_dict["explore_hidden"]:
-				self.explorations_hidden[explore_id] = save_dict["explore_hidden"][explore_id]
-	if typeof(save_dict["actions_hidden"]) == TYPE_DICTIONARY:
-		for action_id in self.actions_hidden:
-			if action_id in save_dict["actions_hidden"]:
-				self.actions_hidden[action_id] = save_dict["actions_hidden"][action_id]
-
+	if (not "actions_completed" in save_dict) or typeof(save_dict["actions_completed"]) != TYPE_DICTIONARY:
+		save_dict["actions_completed"] = {}
+	for action_id in self.actions_completed:
+		if action_id in save_dict["actions_completed"]:
+			self.actions_completed[action_id] = save_dict["actions_completed"][action_id]
+	if (not "stories_unread" in save_dict) or typeof(save_dict["stories_unread"]) != TYPE_DICTIONARY:
+		save_dict["stories_unread"] = {}
+	for action_id in self.action_stories_not_read:
+		if action_id in save_dict["stories_unread"]:
+			self.action_stories_not_read[action_id] = save_dict["stories_unread"][action_id]
+	if (not "explore_hidden" in save_dict) or typeof(save_dict["explore_hidden"]) != TYPE_DICTIONARY:
+		save_dict["explore_hidden"] = {}
+	for explore_id in self.explorations_hidden:
+		if explore_id in save_dict["explore_hidden"]:
+			self.explorations_hidden[explore_id] = save_dict["explore_hidden"][explore_id]
+	if (not "actions_hidden" in save_dict) or typeof(save_dict["actions_hidden"]) != TYPE_DICTIONARY:
+		save_dict["actions_hidden"] = {}
+	for action_id in self.actions_hidden:
+		if action_id in save_dict["actions_hidden"]:
+			self.actions_hidden[action_id] = save_dict["actions_hidden"][action_id]
 
 func clear_data() -> void:
 	for action_id in town_actions:
@@ -302,3 +310,12 @@ func clear_data() -> void:
 		if town_actions[action_id] is MultipartActionData:
 			self.explorations_hidden[action_id+"_multipart"] = false
 	self.reset()
+
+func recalc_lootables() -> void:
+	for lootable in self.lootable_values:
+		var data : Dictionary = self.lootable_values[lootable]
+		var total = self.lootable_actions[lootable].calculate_total_lootables(self.connected_player)
+		data["total"] = total
+		if data["checked"] > data["total"]:
+			data["checked"] = data["total"]
+		data["good"] = data["checked"] / self.lootable_actions[lootable].lootable_ratio

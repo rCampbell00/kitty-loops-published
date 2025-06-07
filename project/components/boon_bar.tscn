@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3rkheffbu2v3"]
+
+[ext_resource type="Script" path="res://components/componentScripts/boon_bar.gd" id="1_cmers"]
+
+[node name="BoonBar" type="Control"]
+visible = false
+custom_minimum_size = Vector2(380, 20)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1540.0
+offset_bottom = -1060.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cmers")
+
+[node name="BoonName" type="Label" parent="."]
+custom_minimum_size = Vector2(358, 20)
+layout_mode = 0
+offset_left = 22.0
+offset_right = 380.0
+offset_bottom = 20.0
+theme_type_variation = &"LabelItems"
+text = "<Boon Name>"
+
+[node name="BoonImage" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+expand_mode = 1
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

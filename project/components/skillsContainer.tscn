@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://dh44s0cldd6or"]
 
-[ext_resource type="PackedScene" uid="uid://bowfkgilnb1j1" path="res://components/skillBar.tscn" id="1_bfhnm"]
+[ext_resource type="Script" path="res://components/componentScripts/skills_container.gd" id="1_7fabs"]
 
-[node name="Control" type="Control"]
+[node name="SkillContainer" type="Control"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +12,7 @@ offset_right = -1520.0
 offset_bottom = -840.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7fabs")
 
 [node name="SkillTitlePanel" type="Panel" parent="."]
 layout_mode = 0
@@ -23,7 +25,7 @@ layout_mode = 0
 offset_right = 400.0
 offset_bottom = 40.0
 theme_type_variation = &"LabelTitle"
-text = "Skills"
+text = "<Skills>"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -34,7 +36,7 @@ offset_right = 400.0
 offset_bottom = 240.0
 theme_type_variation = &"ComponentPanelBottom"
 
-[node name="MarginContainer" type="MarginContainer" parent="SkillsContainer"]
+[node name="M" type="MarginContainer" parent="SkillsContainer"]
 layout_mode = 0
 offset_right = 400.0
 offset_bottom = 200.0
@@ -43,28 +45,30 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SkillsContainer/MarginContainer"]
+[node name="S" type="ScrollContainer" parent="SkillsContainer/M"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VFlowContainer" type="HFlowContainer" parent="SkillsContainer/MarginContainer/ScrollContainer"]
+[node name="V" type="HFlowContainer" parent="SkillsContainer/M/S"]
+custom_minimum_size = Vector2(380, 190)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 theme_override_constants/h_separation = 10
 
-[node name="SelfCombatStat" type="Control" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer"]
+[node name="SelfCombatStat" type="Control" parent="SkillsContainer/M/S/V"]
+visible = false
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 
-[node name="SelfCombatLabel" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/SelfCombatStat"]
+[node name="SelfCombatLabel" type="Label" parent="SkillsContainer/M/S/V/SelfCombatStat"]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 180.0
 offset_bottom = 24.0
 text = "Self Combat"
 
-[node name="SelfCombatValue" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/SelfCombatStat"]
+[node name="SelfCombatValue" type="Label" parent="SkillsContainer/M/S/V/SelfCombatStat"]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 108.0
@@ -72,63 +76,22 @@ offset_bottom = 14.0
 text = "100k"
 horizontal_alignment = 2
 
-[node name="TeamCombatStat" type="Control" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer"]
+[node name="TeamCombatStat" type="Control" parent="SkillsContainer/M/S/V"]
+visible = false
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 
-[node name="TeamCombatLabel" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/TeamCombatStat"]
+[node name="TeamCombatLabel" type="Label" parent="SkillsContainer/M/S/V/TeamCombatStat"]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 108.0
 offset_bottom = 14.0
 text = "Team Combat"
 
-[node name="TeamCombatValue" type="Label" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer/TeamCombatStat"]
+[node name="TeamCombatValue" type="Label" parent="SkillsContainer/M/S/V/TeamCombatStat"]
 custom_minimum_size = Vector2(180, 24)
 layout_mode = 2
 offset_right = 108.0
 offset_bottom = 14.0
 text = "100k"
 horizontal_alignment = 2
-
-[node name="SkillBar" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar2" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar3" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar4" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar5" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar6" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar7" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar8" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar9" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar10" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar11" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar12" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar13" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
-
-[node name="SkillBar14" parent="SkillsContainer/MarginContainer/ScrollContainer/VFlowContainer" instance=ExtResource("1_bfhnm")]
-layout_mode = 2
