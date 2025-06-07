@@ -122,7 +122,7 @@ initial_position = 2
 size = Vector2i(500, 500)
 ok_button_text = "Open"
 file_mode = 0
-access = 1
+access = 2
 use_native_dialog = true
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

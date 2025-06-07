@@ -1,6 +1,7 @@
 extends Label
 var save_string := ""
 var save_name := ""
+var _on_data_loaded_callback = null
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.text = LanguageValues.save_title
@@ -14,6 +15,11 @@ func _ready() -> void:
 	$SavePanel/M/V/Warning.text = LanguageValues.save_warning
 	$SavePanel/M/V/HExport/Export.text = "  " + LanguageValues.export_import_words[0] + "  "
 	$SavePanel/M/V/HExport/Import.text = "  " + LanguageValues.export_import_words[1] + "  "
+	
+	if (OS.get_name() == "Web"):
+		_on_data_loaded_callback = JavaScriptBridge.create_callback(_on_data_loaded)
+		var gdcallbacks: JavaScriptObject = JavaScriptBridge.get_interface("gd_callbacks")
+		gdcallbacks.dataLoaded = _on_data_loaded_callback
 
 
 func _on_list_export_pressed() -> void:
@@ -68,6 +74,7 @@ func _on_save_import_pressed() -> void:
 
 
 func _on_file_export_pressed() -> void:
+	
 	self.save_string = EventBus.get_save_string()
 	self.save_name = "Kitty_Loops_"+LanguageValues.version_number.replace(".","_")+"_Loop_1.txt"
 	var os :=  OS.get_name()
@@ -92,12 +99,16 @@ func _on_load_dialogue_file_selected(path: String) -> void:
 
 func _on_file_import_pressed() -> void:
 	var os :=  OS.get_name()
-	#if os == "Web":
-		#JavaScriptBridge
-	#else:
-	#$SaveDialogue.current_file = save_name
-	$LoadDialogue.show()
+	if os == "Web":
+		if OS.has_feature("JavaScript"):
+			JavaScriptBridge.eval("loadData()")
+	else:
+		$LoadDialogue.show()
 
+func _on_data_loaded(data: Array) -> void:
+	if data.size() == 0:
+		return
+	print(data[0])
 
 func _on_save_panel_mouse_entered() -> void:
 	if has_node("save_time_out"):
